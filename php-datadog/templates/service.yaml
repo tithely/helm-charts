@@ -1,0 +1,14 @@
+{{- range $key, $value := .Values.frontend }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $value.name }}
+  namespace: {{ .Release.Namespace | quote }}
+spec:
+  ports:
+  - name: http
+    targetPort: {{ $value.port }}
+    port: {{ $value.port }}
+  selector:
+    app: {{ $value.name }}
+{{- end }}

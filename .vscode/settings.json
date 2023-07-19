@@ -1,0 +1,15 @@
+{
+  "runOnSave.statusMessageTimeout": 3000,
+  "runOnSave.commands": [
+    {
+      "match": ".*php-datadog.*/*.yaml",
+      "command": "helm lint php-datadog",
+      "runIn": "terminal"
+    },
+    {
+      "match": ".envrc$",
+      "command": "direnv allow .",
+      "runIn": "terminal"
+    }
+  ]
+}

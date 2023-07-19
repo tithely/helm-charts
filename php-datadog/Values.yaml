@@ -1,0 +1,43 @@
+frontend:
+  - name: main
+    enabled: true
+    repository: php
+    tag: "8.1-apache"
+    pullPolicy: IfNotPresent
+    resources: {}
+    port: 80
+    replicaCount: 2
+    host: php-app.local
+    tls:
+      secretRef: php-app-tls
+
+worker:
+  - name: main
+    enabled: true
+    repository: php
+    tag: "8.1-cli"
+    pullPolicy: IfNotPresent
+    resources: {}
+    replicaCount: 1
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+keyinjection:
+  - name: hub-api-key
+    secretRef: hub-api-key
+    mountPath: /app/.hub-api-key
+  - name: test-api-key
+    secretRef: test-api-key
+    mountPath: /app/.test-api-key
+
+datadog:
+  enabled: true
+  apiKey: ""
+
+fluentbit:
+  enabled: true
