@@ -1,0 +1,28 @@
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v2.3.0
+  hooks:
+    - id: end-of-file-fixer
+    - id: trailing-whitespace
+- repo: https://github.com/norwoodj/helm-docs
+  rev: v1.11.1
+  hooks:
+    - id: helm-docs
+- repo: https://github.com/psf/black
+  rev: 23.7.0
+  hooks:
+    - id: black
+- repo: https://github.com/Yelp/detect-secrets
+  rev: v1.4.0
+  hooks:
+    - id: detect-secrets
+- repo: https://github.com/bridgecrewio/checkov.git
+  rev: 2.3.351
+  hooks:
+  - id: checkov
+    args: [-d .]
+# - repo: https://github.com/Agilicus/pre-commit-hook-k8svalidate.git
+#   rev: v0.1.0
+#   hooks:
+#   - id: k8svalidate
+#     files: .yaml$

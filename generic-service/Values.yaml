@@ -9,7 +9,7 @@ frontend:
     replicaCount: 2
     host: php-app.local
     tls:
-      secretRef: php-app-tls
+      secretRef: php-app-tls # pragma: allowlist secret
 
 worker:
   - name: main
@@ -29,10 +29,10 @@ autoscaling:
 
 keyinjection:
   - name: hub-api-key
-    secretRef: hub-api-key
+    secretRef: hub-api-key # pragma: allowlist secret
     mountPath: /app/.hub-api-key
   - name: test-api-key
-    secretRef: test-api-key
+    secretRef: test-api-key # pragma: allowlist secret
     mountPath: /app/.test-api-key
 
 datadog:

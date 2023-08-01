@@ -1,25 +1,29 @@
-{{- range $key, $value := .Values.worker }}
+{{- range $key, $value := .Values.frontend }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ $value.name }}
   namespace: {{ .Release.Namespace | quote }}
   labels:
-    {{- include "php-app.labels" . | nindent 4 }}
+    {{- include "generic-service.labels" . | nindent 4 }}
 spec:
   replicas: {{ $value.replicaCount }}
   selector:
     matchLabels:
-      {{- include "php-app.selectorLabels" . | nindent 6 }}
+      {{- include "generic-service.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "php-app.selectorLabels" . | nindent 8 }}
+        {{- include "generic-service.selectorLabels" . | nindent 8 }}
     spec:
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ $value.repository }}:{{ $value.tag }}"
           imagePullPolicy: {{ $value.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ $value.port }}
+              protocol: TCP
           resources:
             {{- toYaml $value.resources | nindent 12 }}
           volumeMounts:
@@ -68,8 +72,8 @@ spec:
                 cpu: "200m"
       volumes:
         {{- range $key, $value := .Values.keyinjection }}
-        - name: {{ .Values.keyinjection.name }}
+        - name: {{ $value.name }}
           secret:
-            secretName: {{ .Values.keyinjection.secretName }}
+            secretName: {{ $value.secretName }}
         {{- end }}
 {{- end -}}
