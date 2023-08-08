@@ -1,5 +1,5 @@
 frontend:
-  - name: main
+  - name: web
     enabled: true
     image: "php:8.1.22-apache-bullseye"
     pullPolicy: IfNotPresent
@@ -11,7 +11,7 @@ frontend:
       secretRef: php-app-tls # pragma: allowlist secret
 
 worker:
-  - name: main
+  - name: worker
     enabled: true
     image: "php:8.1.22-apache-bullseye"
     pullPolicy: IfNotPresent
@@ -25,13 +25,13 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   targetMemoryUtilizationPercentage: 80
 
-# keyinjection:
-#   - name: hub-api-key
-#     secretRef: hub-api-key # pragma: allowlist secret
-#     mountPath: /app/.hub-api-key
-#   - name: test-api-key
-#     secretRef: test-api-key # pragma: allowlist secret
-#     mountPath: /app/.test-api-key
+keyinjection:
+  - name: hub-api-key
+    secretRef: hub-api-key # pragma: allowlist secret
+    mountPath: /app/.hub-api-key
+  - name: test-api-key
+    secretRef: test-api-key # pragma: allowlist secret
+    mountPath: /app/.test-api-key
 
 datadog:
   enabled: true
