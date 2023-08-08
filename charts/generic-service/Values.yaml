@@ -36,6 +36,3 @@ keyinjection:
 datadog:
   enabled: true
   apiKey: ""
-
-fluentbit:
-  enabled: true
