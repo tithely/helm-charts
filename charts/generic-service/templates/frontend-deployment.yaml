@@ -32,6 +32,6 @@ spec:
         {{- range $key, $value := $.Values.keyinjection }}
         - name: {{ $value.name }}
           secret:
-            secretRef: {{ $value.secretRef }}
+            secretName: {{ $value.secretName }}
         {{- end }}
 {{- end -}}
