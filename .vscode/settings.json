@@ -3,7 +3,7 @@
   "runOnSave.commands": [
     {
       "match": ".*charts/generic-service.*/*.yaml",
-      "command": "helm lint generic-service",
+      "command": "helm lint charts/generic-service",
       "runIn": "terminal"
     },
     {
