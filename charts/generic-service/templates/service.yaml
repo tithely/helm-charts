@@ -5,11 +5,12 @@ kind: Service
 metadata:
   name: {{ $value.name }}
   namespace: {{ $.Release.Namespace | quote }}
+  labels: {{- include "serviceLabels" . | indent 4 }}
 spec:
   ports:
   - name: http
     targetPort: {{ $value.port }}
     port: {{ $value.port }}
   selector:
-    app: {{ $value.name }}
+  {{- include "frontendLabels" . | indent 4 }}
 {{- end }}
