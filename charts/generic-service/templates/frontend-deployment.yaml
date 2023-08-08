@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ $value.name }}
-  namespace: {{ .Release.Namespace | quote }}
+  namespace: {{ $.Release.Namespace | quote }}
   labels:
     {{- include "generic-service.labels" . | nindent 4 }}
 spec:

@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ $value.name }}
-  namespace: {{ .Release.Namespace | quote }}
+  namespace: {{ $.Release.Namespace | quote }}
   labels:
     {{- include "generic-service.labels" . | nindent 4 }}
 spec:
@@ -17,7 +17,7 @@ spec:
         {{- include "generic-service.selectorLabels" . | nindent 8 }}
     spec:
       containers:
-        - name: {{ .Chart.Name }}
+        - name: {{ $.Chart.Name }}
           image: "{{ $value.repository }}:{{ $value.tag }}"
           imagePullPolicy: {{ $value.pullPolicy }}
           resources:
