@@ -27,27 +27,27 @@ jobs:
       - name: Install Helm
         uses: azure/setup-helm@v3
 
-      # - name: Run chart-releaser
-      #   uses: helm/chart-releaser-action@v1.5.0
-      #   env:
-      #     CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      - name: Run chart-releaser
+        uses: helm/chart-releaser-action@v1.5.0
+        env:
+          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
-      - name: Package Helm Charts
-        shell: bash
-        run: |
-          find charts/ -type f -name 'Chart.yaml' | sed -r 's|/[^/]+$||' | sort | uniq | xargs -L 1 helm dep up
-          for d in charts/*/ ; do
-              echo "$d"
-              helm package "$d" -u -d dest
-          done
-      - name: Push New Files
-        shell: bash
-        working-directory: dest
-        run: |
-          helm repo index . --url https://raw.githubusercontent.com/tithely/helm-charts/gh-pages/
-          git config user.name "Helm Updater"
-          git config user.email "actions@users.noreply.github.com"
-          git add $(git ls-files -o --exclude-standard)
-          git add index.yaml
-          git commit -m "Updated from ref: $GITHUB_SHA"
-          git push
+      # - name: Package Helm Charts
+      #   shell: bash
+      #   run: |
+      #     find charts/ -type f -name 'Chart.yaml' | sed -r 's|/[^/]+$||' | sort | uniq | xargs -L 1 helm dep up
+      #     for d in charts/*/ ; do
+      #         echo "$d"
+      #         helm package "$d" -u -d dest
+      #     done
+      # - name: Push New Files
+      #   shell: bash
+      #   working-directory: dest
+      #   run: |
+      #     helm repo index . --url https://raw.githubusercontent.com/tithely/helm-charts/gh-pages/
+      #     git config user.name "Helm Updater"
+      #     git config user.email "actions@users.noreply.github.com"
+      #     git add $(git ls-files -o --exclude-standard)
+      #     git add index.yaml
+      #     git commit -m "Updated from ref: $GITHUB_SHA"
+      #     git push
