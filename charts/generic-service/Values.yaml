@@ -1,8 +1,7 @@
 frontend:
   - name: main
     enabled: true
-    repository: php
-    tag: "8.1-apache"
+    image: "php:8.1-apache"
     pullPolicy: IfNotPresent
     resources: {}
     port: 80
@@ -14,8 +13,7 @@ frontend:
 worker:
   - name: main
     enabled: true
-    repository: php
-    tag: "8.1-cli"
+    image: "php:8.1-cli"
     pullPolicy: IfNotPresent
     resources: {}
     replicaCount: 1
