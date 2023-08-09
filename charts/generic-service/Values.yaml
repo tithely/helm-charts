@@ -25,14 +25,10 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   targetMemoryUtilizationPercentage: 80
 
-keyinjection:
-  - name: hub-api-key
-    secretName: hub-api-key # pragma: allowlist secret
-    mountPath: /app/.hub-api-key
-  - name: test-api-key
-    secretName: test-api-key # pragma: allowlist secret
-    mountPath: /app/.test-api-key
-
-datadog:
-  enabled: true
-  apiKey: ""
+# keyinjection:
+#   - name: hub-api-key
+#     secretName: hub-api-key # pragma: allowlist secret
+#     mountPath: /app/.hub-api-key
+#   - name: test-api-key
+#     secretName: test-api-key # pragma: allowlist secret
+#     mountPath: /app/.test-api-key
