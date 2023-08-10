@@ -17,6 +17,11 @@ spec:
           image: "{{ $value.image }}"
           imagePullPolicy: {{ $value.pullPolicy }}
           resources: {{- toYaml $value.resources | nindent 12 }}
+          command: {{- toYaml $value.command | nindent 12 }}
+          args:
+            {{  range .$value.args }}
+              - {{ . }}
+            {{ end }}
           volumeMounts:
             {{- range $key, $value := $.Values.keyinjection }}
             - name: {{ $value.name }}
