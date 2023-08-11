@@ -8,9 +8,10 @@ metadata:
 spec:
   replicas: {{ $value.replicaCount }}
   selector:
-    app.kubernetes.io/name: {{ $value.name | quote }}
-    app.kubernetes.io/component: web
-    app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
+    matchlabels:
+      app.kubernetes.io/name: {{ $value.name | quote }}
+      app.kubernetes.io/component: web
+      app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
   template:
     metadata:
       app.kubernetes.io/name: {{ $value.name | quote }}
