@@ -1,16 +1,16 @@
 {
   "runOnSave.statusMessageTimeout": 3000,
   "runOnSave.commands": [
-    {
-      "match": ".*charts/generic-service.*/*.yaml",
-      "command": "helm lint charts/generic-service",
-      "runIn": "terminal"
-    },
-    {
-      "match": ".*charts/generic-service.*/*.yaml",
-      "command": "helm template test charts/generic-service --values charts/generic-service/test.yaml --debug",
-      "runIn": "terminal"
-    },
+    // {
+    //   "match": ".*charts/generic-service.*/*.yaml",
+    //   "command": "helm lint charts/generic-service",
+    //   "runIn": "terminal"
+    // },
+    // {
+    //   "match": ".*charts/generic-service.*/*.yaml",
+    //   "command": "helm template test charts/generic-service --values charts/generic-service/test.yaml --debug",
+    //   "runIn": "terminal"
+    // },
     {
       "match": ".envrc$",
       "command": "direnv allow .",
