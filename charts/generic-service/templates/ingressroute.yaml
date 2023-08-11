@@ -9,7 +9,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: {{ $value.host | quote }}
+    - match: Host(`{{ $value.host | quote }}')
       kind: Rule
       services:
         - name: {{ $value.name | quote }}
