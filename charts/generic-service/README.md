@@ -1,6 +1,6 @@
 # generic-service
 
-![Version: 1.0.19](https://img.shields.io/badge/Version-1.0.19-informational?style=flat-square)
+![Version: 1.0.20](https://img.shields.io/badge/Version-1.0.20-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
@@ -16,15 +16,18 @@ A Helm chart for Kubernetes
 | frontend[0].enabled | bool | `true` |  |
 | frontend[0].host | string | `"php-app.local"` |  |
 | frontend[0].image | string | `"php:8.1.22-apache-bullseye"` |  |
+| frontend[0].imagepolicy.pattern | string | `"^DEVOPS-338-deploy-breeze-qa-api-[a-fA-F0-9]+-(?P<ts>.*)"` |  |
 | frontend[0].name | string | `"frontend"` |  |
 | frontend[0].port | int | `80` |  |
 | frontend[0].pullPolicy | string | `"IfNotPresent"` |  |
 | frontend[0].replicaCount | int | `2` |  |
 | frontend[0].resources | object | `{}` |  |
 | frontend[0].tls.secretRef | string | `"php-app-tls"` |  |
+| imagerepository | string | `"326040123112.dkr.ecr.us-east-2.amazonaws.com/breeze"` |  |
 | path | string | `"some/path"` |  |
 | worker[0].enabled | bool | `true` |  |
 | worker[0].image | string | `"php:8.1.22-apache-bullseye"` |  |
+| worker[0].imagepolicy.pattern | string | `"^DEVOPS-338-deploy-breeze-qa-api-[a-fA-F0-9]+-(?P<ts>.*)"` |  |
 | worker[0].name | string | `"worker"` |  |
 | worker[0].pullPolicy | string | `"IfNotPresent"` |  |
 | worker[0].replicaCount | int | `1` |  |

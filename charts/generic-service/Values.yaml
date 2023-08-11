@@ -1,4 +1,7 @@
 path: some/path
+
+imagerepository: 326040123112.dkr.ecr.us-east-2.amazonaws.com/breeze
+
 frontend:
   - name: frontend
     enabled: true
@@ -10,6 +13,8 @@ frontend:
     host: php-app.local
     tls:
       secretRef: php-app-tls # pragma: allowlist secret
+    imagepolicy:
+      pattern: ^DEVOPS-338-deploy-breeze-qa-api-[a-fA-F0-9]+-(?P<ts>.*)
 
 worker:
   - name: worker
@@ -18,6 +23,8 @@ worker:
     pullPolicy: IfNotPresent
     resources: {}
     replicaCount: 1
+    imagepolicy:
+      pattern: ^DEVOPS-338-deploy-breeze-qa-api-[a-fA-F0-9]+-(?P<ts>.*)
 
 autoscaling:
   enabled: true
