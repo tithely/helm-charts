@@ -1,3 +1,4 @@
+path: some/path
 frontend:
   - name: frontend
     enabled: true
@@ -24,7 +25,6 @@ autoscaling:
   maxReplicas: 100
   targetCPUUtilizationPercentage: 80
   targetMemoryUtilizationPercentage: 80
-
 # keyinjection:
 #   - name: hub-api-key
 #     secretName: hub-api-key # pragma: allowlist secret

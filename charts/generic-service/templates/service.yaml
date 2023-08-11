@@ -5,12 +5,17 @@ kind: Service
 metadata:
   name: {{ $value.name }}
   namespace: {{ $.Release.Namespace | quote }}
-  labels: {{- include "serviceLabels" . | indent 4 }}
+  labels:
+    app.kubernetes.io/name: {{ $value.name }}
+    app.kubernetes.io/component: service
+    app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
 spec:
   ports:
   - name: http
     targetPort: {{ $value.port }}
     port: {{ $value.port }}
   selector:
-  {{- include "frontendLabels" . | indent 4 }}
+    app.kubernetes.io/name: {{ $value.name }}
+    app.kubernetes.io/component: web
+    app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
 {{- end }}

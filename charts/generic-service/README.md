@@ -1,6 +1,6 @@
 # generic-service
 
-![Version: 1.0.3](https://img.shields.io/badge/Version-1.0.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.0.10](https://img.shields.io/badge/Version-1.0.10-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.1](https://img.shields.io/badge/AppVersion-1.0.1-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
@@ -13,27 +13,19 @@ A Helm chart for Kubernetes
 | autoscaling.minReplicas | int | `1` |  |
 | autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
 | autoscaling.targetMemoryUtilizationPercentage | int | `80` |  |
-| datadog.apiKey | string | `""` |  |
-| datadog.enabled | bool | `true` |  |
-| fluentbit.enabled | bool | `true` |  |
 | frontend[0].enabled | bool | `true` |  |
 | frontend[0].host | string | `"php-app.local"` |  |
-| frontend[0].image | string | `"php:8.1-apache"` |  |
-| frontend[0].name | string | `"main"` |  |
+| frontend[0].image | string | `"php:8.1.22-apache-bullseye"` |  |
+| frontend[0].name | string | `"frontend"` |  |
 | frontend[0].port | int | `80` |  |
 | frontend[0].pullPolicy | string | `"IfNotPresent"` |  |
 | frontend[0].replicaCount | int | `2` |  |
 | frontend[0].resources | object | `{}` |  |
 | frontend[0].tls.secretRef | string | `"php-app-tls"` |  |
-| keyinjection[0].mountPath | string | `"/app/.hub-api-key"` |  |
-| keyinjection[0].name | string | `"hub-api-key"` |  |
-| keyinjection[0].secretRef | string | `"hub-api-key"` |  |
-| keyinjection[1].mountPath | string | `"/app/.test-api-key"` |  |
-| keyinjection[1].name | string | `"test-api-key"` |  |
-| keyinjection[1].secretRef | string | `"test-api-key"` |  |
+| path | string | `"some/path"` |  |
 | worker[0].enabled | bool | `true` |  |
-| worker[0].image | string | `"php:8.1-cli"` |  |
-| worker[0].name | string | `"main"` |  |
+| worker[0].image | string | `"php:8.1.22-apache-bullseye"` |  |
+| worker[0].name | string | `"worker"` |  |
 | worker[0].pullPolicy | string | `"IfNotPresent"` |  |
 | worker[0].replicaCount | int | `1` |  |
 | worker[0].resources | object | `{}` |  |

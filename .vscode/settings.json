@@ -7,6 +7,11 @@
       "runIn": "terminal"
     },
     {
+      "match": ".*charts/generic-service.*/*.yaml",
+      "command": "helm template test charts/generic-service --values charts/generic-service/test.yaml",
+      "runIn": "terminal"
+    },
+    {
       "match": ".envrc$",
       "command": "direnv allow .",
       "runIn": "terminal"

@@ -6,11 +6,15 @@ metadata:
   namespace: {{ $.Release.Namespace | quote }}
 spec:
   replicas: {{ $value.replicaCount }}
-  selector: 
-    matchLabels: {{- include "frontendLabels" . | indent 6 }}
+  selector:
+    app.kubernetes.io/name: {{ $value.name }}
+    app.kubernetes.io/component: web
+    app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
   template:
-    metadata: 
-      labels: {{- include "frontendLabels" . | indent 8 }}
+    metadata:
+      app.kubernetes.io/name: {{ $value.name }}
+      app.kubernetes.io/component: web
+      app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
     spec:
       containers:
         - name: {{ $.Chart.Name }}
