@@ -14,9 +14,10 @@ spec:
       app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
   template:
     metadata:
-      app.kubernetes.io/name: {{ $value.name }}
-      app.kubernetes.io/component: worker
-      app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
+      labels:
+        app.kubernetes.io/name: {{ $value.name }}
+        app.kubernetes.io/component: worker
+        app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
     spec:
       containers:
         - name: {{ $.Chart.Name }}
