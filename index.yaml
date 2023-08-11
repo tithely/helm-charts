@@ -2,6 +2,14 @@ apiVersion: v1
 entries:
   generic-service:
   - apiVersion: v1
+    created: "2023-08-11T11:05:38.507479266Z"
+    description: A Helm chart for Kubernetes
+    digest: c584619c3c6aa897f2962b8ed58b22024b9037cec0060d6dce634f5ddd605730
+    name: generic-service
+    urls:
+    - https://github.com/tithely/helm-charts/releases/download/generic-service-1.0.13/generic-service-1.0.13.tgz
+    version: 1.0.13
+  - apiVersion: v1
     created: "2023-08-11T10:53:28.529050763Z"
     description: A Helm chart for Kubernetes
     digest: c3a3bf81dd60a6fae01b13a07f21ef1c91d115f7806e66961e24249285c3e553
@@ -107,4 +115,4 @@ entries:
     urls:
     - https://github.com/tithely/helm-charts/releases/download/generic-service-1.0.2/generic-service-1.0.2.tgz
     version: 1.0.2
-generated: "2023-08-11T10:53:28.529089064Z"
+generated: "2023-08-11T11:05:38.507737471Z"
