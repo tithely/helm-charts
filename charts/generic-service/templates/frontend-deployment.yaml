@@ -1,0 +1,41 @@
+{{- range $key, $value := .Values.frontend }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $value.name }}
+  namespace: {{ $.Release.Namespace | quote }}
+spec:
+  replicas: {{ $value.replicaCount }}
+  selector:
+    app.kubernetes.io/name: {{ $value.name }}
+    app.kubernetes.io/component: web
+    app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
+  template:
+    metadata:
+      app.kubernetes.io/name: {{ $value.name }}
+      app.kubernetes.io/component: web
+      app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
+    spec:
+      containers:
+        - name: {{ $.Chart.Name }}
+          image: "{{ $value.image }}"
+          imagePullPolicy: {{ $value.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ $value.port }}
+              protocol: TCP
+          resources:
+            {{- toYaml $value.resources | nindent 12 }}
+          volumeMounts:
+            {{- range $key, $value := $.Values.keyinjection }}
+            - name: {{ $value.name }}
+              mountPath: {{ $value.mountPath }}
+              readOnly: true
+            {{- end }}
+      volumes:
+        {{- range $key, $value := $.Values.keyinjection }}
+        - name: {{ $value.name }}
+          secret:
+            secretName: {{ $value.secretName }}
+        {{- end }}
+{{- end -}}

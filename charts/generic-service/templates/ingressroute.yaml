@@ -1,0 +1,21 @@
+{{- range $key, $value := .Values.frontend }}
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ $value.name | quote }}
+  namespace: {{ $.Release.NameSpace | quote }}
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: {{ $value.host | quote }}
+      kind: Rule
+      services:
+        - name: {{ $value.name | quote }}
+          port: {{ $value.port }}
+  tls:
+    domains:
+      - main: {{ $value.host | quote }}
+    secretName:  {{ $value.tls.secretRef | quote }}
+{{- end -}}
