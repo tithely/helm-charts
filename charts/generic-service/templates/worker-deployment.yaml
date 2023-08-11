@@ -3,73 +3,39 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ $value.name }}
-  namespace: {{ .Release.Namespace | quote }}
-  labels:
-    {{- include "generic-service.labels" . | nindent 4 }}
+  namespace: {{ $.Release.Namespace | quote }}
 spec:
   replicas: {{ $value.replicaCount }}
   selector:
-    matchLabels:
-      {{- include "generic-service.selectorLabels" . | nindent 6 }}
+    app.kubernetes.io/name: {{ $value.name }}
+    app.kubernetes.io/component: worker
+    app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
   template:
     metadata:
-      labels:
-        {{- include "generic-service.selectorLabels" . | nindent 8 }}
+      app.kubernetes.io/name: {{ $value.name }}
+      app.kubernetes.io/component: worker
+      app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
     spec:
       containers:
-        - name: {{ .Chart.Name }}
-          image: "{{ $value.repository }}:{{ $value.tag }}"
+        - name: {{ $.Chart.Name }}
+          image: "{{ $value.image }}"
           imagePullPolicy: {{ $value.pullPolicy }}
-          resources:
-            {{- toYaml $value.resources | nindent 12 }}
+          resources: {{- toYaml $value.resources | nindent 12 }}
+          command: {{ $value.command  }}
+          args:
+          {{- range $value.args }}
+            - {{ . }}
+          {{- end }}
           volumeMounts:
-            {{- range $key, $value := .Values.keyinjection }}
+            {{- range $key, $value := $.Values.keyinjection }}
             - name: {{ $value.name }}
               mountPath: {{ $value.mountPath }}
               readOnly: true
             {{- end }}
-        ## Running the Agent as a side-car
-        # https://docs.datadoghq.com/integrations/eks_fargate/
-        - name: datadog-agent
-          image: datadog/agent
-          ## Enabling port 8126 for Trace collection
-          ports:
-            - containerPort: 8126
-              name: traceport
-              protocol: TCP
-          env:
-          - name: DD_API_KEY
-            valueFrom:
-              secretKeyRef:
-                name: datadog-api-key
-                key: api-key
-            ## Set DD_SITE to "datadoghq.eu" to send your
-            ## Agent data to the Datadog EU site
-          - name: DD_SITE
-            value: "datadoghq.com"
-          - name: DD_EKS_FARGATE
-            value: "true"
-          - name: DD_CLUSTER_NAME
-            valueFrom:
-              fieldRef:
-                apiVersion: v1
-                fieldPath: data.cluster-name
-          - name: DD_KUBERNETES_KUBELET_NODENAME
-            valueFrom:
-              fieldRef:
-                apiVersion: v1
-                fieldPath: spec.nodeName
-          resources:
-              requests:
-                memory: "256Mi"
-                cpu: "200m"
-              limits:
-                memory: "256Mi"
-                cpu: "200m"
       volumes:
-        {{- range $key, $value := .Values.keyinjection }}
-        - name: {{ .Values.keyinjection.name }}
+        {{- range $key, $value := $.Values.keyinjection }}
+        - name: {{ $value.name }}
           secret:
-            secretName: {{ .Values.keyinjection.secretName }}
+            secretName: {{ $value.secretName }}
         {{- end }}
 {{- end -}}

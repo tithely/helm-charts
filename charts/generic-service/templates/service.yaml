@@ -1,14 +1,21 @@
+---
 {{- range $key, $value := .Values.frontend }}
 apiVersion: v1
 kind: Service
 metadata:
   name: {{ $value.name }}
-  namespace: {{ .Release.Namespace | quote }}
+  namespace: {{ $.Release.Namespace | quote }}
+  labels:
+    app.kubernetes.io/name: {{ $value.name }}
+    app.kubernetes.io/component: service
+    app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
 spec:
   ports:
   - name: http
     targetPort: {{ $value.port }}
     port: {{ $value.port }}
   selector:
-    app: {{ $value.name }}
+    app.kubernetes.io/name: {{ $value.name }}
+    app.kubernetes.io/component: web
+    app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
 {{- end }}

@@ -1,7 +1,8 @@
+path: some/path
 frontend:
-  - name: main
+  - name: frontend
     enabled: true
-    image: "php:8.1-apache"
+    image: "php:8.1.22-apache-bullseye"
     pullPolicy: IfNotPresent
     resources: {}
     port: 80
@@ -11,9 +12,9 @@ frontend:
       secretRef: php-app-tls # pragma: allowlist secret
 
 worker:
-  - name: main
+  - name: worker
     enabled: true
-    image: "php:8.1-cli"
+    image: "php:8.1.22-apache-bullseye"
     pullPolicy: IfNotPresent
     resources: {}
     replicaCount: 1
@@ -24,18 +25,10 @@ autoscaling:
   maxReplicas: 100
   targetCPUUtilizationPercentage: 80
   targetMemoryUtilizationPercentage: 80
-
-keyinjection:
-  - name: hub-api-key
-    secretRef: hub-api-key # pragma: allowlist secret
-    mountPath: /app/.hub-api-key
-  - name: test-api-key
-    secretRef: test-api-key # pragma: allowlist secret
-    mountPath: /app/.test-api-key
-
-datadog:
-  enabled: true
-  apiKey: ""
-
-fluentbit:
-  enabled: true
+# keyinjection:
+#   - name: hub-api-key
+#     secretName: hub-api-key # pragma: allowlist secret
+#     mountPath: /app/.hub-api-key
+#   - name: test-api-key
+#     secretName: test-api-key # pragma: allowlist secret
+#     mountPath: /app/.test-api-key
