@@ -5,6 +5,8 @@ kind: Deployment
 metadata:
   name: {{ $value.name }}
   namespace: {{ $.Release.Namespace | quote }}
+  annotations:
+    operator.1password.io/item-path: {{ $value.opItemPath }}
 spec:
   replicas: {{ $value.replicaCount }}
   selector:
