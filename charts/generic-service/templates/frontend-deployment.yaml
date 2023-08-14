@@ -23,6 +23,9 @@ spec:
         - name: {{ $.Chart.Name }}
           image: "{{ $value.image }}"
           imagePullPolicy: {{ $value.pullPolicy }}
+          envFrom:
+          - secretRef:
+            name: {{ $value.secretsRef }}
           ports:
             - name: http
               containerPort: {{ $value.port }}
