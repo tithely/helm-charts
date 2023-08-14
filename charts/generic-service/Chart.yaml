@@ -1,4 +1,4 @@
 apiVersion: v2
 name: generic-service
 description: A Helm chart for Kubernetes
-version: 1.0.23
+version: 1.0.24
