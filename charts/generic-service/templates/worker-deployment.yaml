@@ -27,7 +27,7 @@ spec:
           imagePullPolicy: {{ $value.pullPolicy }}
           envFrom:
           - secretRef:
-            name: {{ $value.secretsRef }}
+              name: {{ $value.secretsRef }}
           resources: {{- toYaml $value.resources | nindent 12 }}
           command: {{ $value.command  }}
           args:
