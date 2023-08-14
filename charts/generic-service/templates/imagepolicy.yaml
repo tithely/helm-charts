@@ -3,7 +3,7 @@
 apiVersion: image.toolkit.fluxcd.io/v1beta2
 kind: ImagePolicy
 metadata:
-  name: {{ $.Release.Namespace }}-{{ $.Release.Name }}-{{ $value.name }}
+  name: {{ $.Release.Namespace }}-{{ $value.name }}
   namespace: flux-system
 spec:
   filterTags:
@@ -20,7 +20,7 @@ spec:
 apiVersion: image.toolkit.fluxcd.io/v1beta2
 kind: ImagePolicy
 metadata:
-  name: {{ $.Release.Namespace }}-{{ $.Release.Name }}-{{ $value.name }}
+  name: {{ $.Release.Namespace }}-{{ $value.name }}
   namespace: flux-system
 spec:
   filterTags:
