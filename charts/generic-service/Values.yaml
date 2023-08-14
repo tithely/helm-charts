@@ -7,6 +7,7 @@ frontend:
     enabled: true
     image: "php:8.1.22-apache-bullseye"
     pullPolicy: IfNotPresent
+    secretsRef: qa-environemnt-variables
     resources: {}
     port: 80
     replicaCount: 2
@@ -21,6 +22,7 @@ worker:
     enabled: true
     image: "php:8.1.22-apache-bullseye"
     pullPolicy: IfNotPresent
+    secretsRef: qa-environemnt-variables
     resources: {}
     replicaCount: 1
     imagepolicy:

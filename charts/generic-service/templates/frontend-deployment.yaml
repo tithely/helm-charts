@@ -26,7 +26,7 @@ spec:
           image: "{{ $value.image }}"
           imagePullPolicy: {{ $value.pullPolicy }}
           envFrom:
-        - secretRef:
+          - secretRef:
             name: {{ $value.secretsRef }}
           ports:
             - name: http
