@@ -5,8 +5,15 @@ kind: Deployment
 metadata:
   name: {{ $value.name }}
   namespace: {{ $.Release.Namespace | quote }}
+  labels:
+    # Datadog
+    tags.datadoghq.com/env: {{ $.Values.environment | quote }}
+    tags.datadoghq.com/service: {{ $.Values.project | quote }}
+    tags.datadoghq.com/version: "<VERSION>"
   annotations:
-    operator.1password.io/item-path: {{ $value.opItemPath }}
+    # TODO
+    #update the following to support projection
+    operator.1password.io/item-path: "vaults/EnvironmentVariables/items/{{ $.Values.project }}-{{ $.Values.environment }}"
 spec:
   replicas: {{ $value.replicaCount }}
   selector:
@@ -20,11 +27,28 @@ spec:
         app.kubernetes.io/name: {{ $value.name }}
         app.kubernetes.io/component: worker
         app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
+        # Datadog
+        tags.datadoghq.com/env: {{ $.Values.environment | quote }}
+        tags.datadoghq.com/service: {{ $.Values.project | quote }}
+        tags.datadoghq.com/version: "<VERSION>"
     spec:
       containers:
         - name: {{ $.Chart.Name }}
           image: "{{ $value.image }}"
           imagePullPolicy: {{ $value.pullPolicy }}
+          env:
+            - name: DD_ENV
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['tags.datadoghq.com/env']
+            - name: DD_SERVICE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['tags.datadoghq.com/service']
+            - name: DD_VERSION
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['tags.datadoghq.com/version']
           envFrom:
           - secretRef:
               name: {{ $value.secretsRef }}
