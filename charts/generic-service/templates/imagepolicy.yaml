@@ -27,7 +27,7 @@ spec:
     extract: $ts
     pattern: {{ $value.imagepolicy.pattern }}
   imageRepositoryRef:
-    name: {{ $.Values.imagerepository }}
+    name: {{ $.Values.project }}
   policy:
     numerical:
       order: asc

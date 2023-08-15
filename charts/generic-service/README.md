@@ -1,6 +1,6 @@
 # generic-service
 
-![Version: 1.0.32](https://img.shields.io/badge/Version-1.0.32-informational?style=flat-square)
+![Version: 1.0.33](https://img.shields.io/badge/Version-1.0.33-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
@@ -25,8 +25,8 @@ A Helm chart for Kubernetes
 | frontend[0].resources | object | `{}` |  |
 | frontend[0].secretsRef | string | `"qa-environemnt-variables"` |  |
 | frontend[0].tls.secretRef | string | `"php-app-tls"` |  |
-| imagerepository | string | `"326040123112.dkr.ecr.us-east-2.amazonaws.com/breeze"` |  |
 | project | string | `"breeze"` |  |
+| version | string | `"1.0.0"` |  |
 | worker[0].enabled | bool | `true` |  |
 | worker[0].image | string | `"php:8.1.22-apache-bullseye"` |  |
 | worker[0].imagepolicy.pattern | string | `"^DEVOPS-338-deploy-breeze-qa-api-[a-fA-F0-9]+-(?P<ts>.*)"` |  |

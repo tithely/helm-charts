@@ -1,7 +1,6 @@
 project: breeze
 environment: qa
-
-imagerepository: 326040123112.dkr.ecr.us-east-2.amazonaws.com/breeze
+version: 1.0.0
 
 frontend:
   - name: frontend
