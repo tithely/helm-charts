@@ -5,6 +5,7 @@ version: 1.0.0
 frontend:
   - name: frontend
     enabled: true
+    type: php
     image: "php:8.1.22-apache-bullseye"
     pullPolicy: IfNotPresent
     secretsRef: qa-environemnt-variables # pragma: allowlist secret
@@ -20,6 +21,7 @@ frontend:
 worker:
   - name: worker
     enabled: true
+    type: php
     image: "php:8.1.22-apache-bullseye"
     pullPolicy: IfNotPresent
     secretsRef: qa-environemnt-variables # pragma: allowlist secret

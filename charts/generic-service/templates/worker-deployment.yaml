@@ -49,6 +49,10 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.labels['tags.datadoghq.com/version']
+            - name: DD_APPSEC_ENABLED
+              value: "true"
+            - name: DD_PROFILING_ENABLED
+              value: "true"
           envFrom:
           - secretRef:
               name: {{ $value.secretsRef }}

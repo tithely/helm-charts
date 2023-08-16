@@ -28,6 +28,7 @@ spec:
         app.kubernetes.io/component: web
         app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
         # Datadog
+        admission.datadoghq.com/enabled: "true"
         tags.datadoghq.com/env: {{ $.Values.environment | quote }}
         tags.datadoghq.com/service: {{ $.Values.project | quote }}
         tags.datadoghq.com/version: {{ $.Values.version | quote }}
@@ -49,6 +50,10 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.labels['tags.datadoghq.com/version']
+            - name: DD_APPSEC_ENABLED
+              value: "true"
+            - name: DD_PROFILING_ENABLED
+              value: "true"
           envFrom:
           - secretRef:
               name: {{ $value.secretsRef }}
