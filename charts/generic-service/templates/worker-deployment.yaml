@@ -28,6 +28,8 @@ spec:
         app.kubernetes.io/component: worker
         app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
         # Datadog
+        admission.datadoghq.com/enabled: "true"
+        com.datadoghq.ad.logs: '[{"service": {{ $.Values.project | quote }} }]'
         tags.datadoghq.com/env: {{ $.Values.environment | quote }}
         tags.datadoghq.com/service: {{ $.Values.project | quote }}
         tags.datadoghq.com/version: {{ $.Values.version | quote }}
