@@ -1,6 +1,6 @@
 # generic-service
 
-![Version: 1.0.41](https://img.shields.io/badge/Version-1.0.41-informational?style=flat-square)
+![Version: 1.0.42](https://img.shields.io/badge/Version-1.0.42-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
@@ -23,7 +23,7 @@ A Helm chart for Kubernetes
 | frontend[0].pullPolicy | string | `"IfNotPresent"` |  |
 | frontend[0].replicaCount | int | `2` |  |
 | frontend[0].resources | object | `{}` |  |
-| frontend[0].secretsRef | string | `"qa-environemnt-variables"` |  |
+| frontend[0].secretsRef | string | `"qa-environment-variables"` |  |
 | frontend[0].tls.secretRef | string | `"php-app-tls"` |  |
 | frontend[0].type | string | `"php"` |  |
 | project | string | `"breeze"` | To nest folders in flux use underscores which will map to sub-directories |

@@ -56,8 +56,7 @@ spec:
             - name: DD_PROFILING_ENABLED
               value: "true"
           envFrom:
-          - secretRef:
-              name: {{ $value.secretsRef }}
+            {{- toYaml $value.envFrom | nindent 12 }}
           resources: {{- toYaml $value.resources | nindent 12 }}
           command: {{ $value.command  }}
           args:
