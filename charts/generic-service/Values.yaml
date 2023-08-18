@@ -1,3 +1,4 @@
+# To nest folders in flux use underscores which will map to sub-directories
 project: breeze
 environment: qa
 version: 1.0.0
