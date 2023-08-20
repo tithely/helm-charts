@@ -22,5 +22,5 @@ spec:
     kind: GitRepository
     name: flux-system
   update:
-    path: {{ .Values.project | replace "_" "/" }}/{{ .Values.environment }}
+    path: "{{ .Values.project | replace "_" "/" }}/{{ .Values.environment }}"
     strategy: Setters
