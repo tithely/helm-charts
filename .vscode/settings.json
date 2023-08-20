@@ -8,7 +8,7 @@
     // },
     {
       "match": ".*charts/generic-service.*/*.yaml",
-      "command": "helm template test charts/generic-service --values charts/generic-service/test.yaml --debug",
+      "command": "helm template test charts/generic-service --values ./charts/generic-service/test.yaml --debug",
       "runIn": "terminal"
     },
     {
