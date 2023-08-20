@@ -13,7 +13,8 @@ spec:
       author:
         email: fluxcdbot@users.noreply.github.com
         name: fluxcdbot
-        messageTemplate: "[[ template [[range .Updated.Images]][[println .]][[end]] ]]"
+        messageTemplate: |-
+          {{ `{{range .Updated.Images}}{{println .}}{{end}}` }}
     push:
       branch: main
   interval: 10m0s

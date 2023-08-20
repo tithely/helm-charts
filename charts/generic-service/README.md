@@ -1,6 +1,6 @@
 # generic-service
 
-![Version: 1.0.45](https://img.shields.io/badge/Version-1.0.45-informational?style=flat-square)
+![Version: 1.0.46](https://img.shields.io/badge/Version-1.0.46-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
