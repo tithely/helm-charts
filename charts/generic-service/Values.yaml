@@ -3,6 +3,10 @@ project: breeze
 environment: qa
 version: 1.0.0
 
+onepassworditems:
+  - name: qa-environemnt-variables
+    itemPath: "vaults/EnvironmentVariables/items/breeze-qa"
+
 frontend:
   - name: frontend
     enabled: true

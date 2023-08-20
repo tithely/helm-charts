@@ -1,6 +1,6 @@
 # generic-service
 
-![Version: 1.0.47](https://img.shields.io/badge/Version-1.0.47-informational?style=flat-square)
+![Version: 1.0.48](https://img.shields.io/badge/Version-1.0.48-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
@@ -26,6 +26,8 @@ A Helm chart for Kubernetes
 | frontend[0].secretsRef | string | `"qa-environment-variables"` |  |
 | frontend[0].tls.secretRef | string | `"php-app-tls"` |  |
 | frontend[0].type | string | `"php"` |  |
+| onepassworditems[0].itemPath | string | `"vaults/EnvironmentVariables/items/breeze-qa"` |  |
+| onepassworditems[0].name | string | `"qa-environemnt-variables"` |  |
 | project | string | `"breeze"` | To nest folders in flux use underscores which will map to sub-directories |
 | version | string | `"1.0.0"` |  |
 | worker[0].enabled | bool | `true` |  |
