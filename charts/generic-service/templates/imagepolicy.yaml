@@ -10,7 +10,7 @@ spec:
     extract: $ts
     pattern: {{ $value.imagepolicy.pattern }}
   imageRepositoryRef:
-    name: {{ $.Values.imagerepository }}
+    name: {{ $.Values.project | replace "_" "-"  }}
   policy:
     numerical:
       order: asc
