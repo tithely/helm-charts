@@ -16,7 +16,7 @@ frontend:
     secretsRef: qa-environment-variables # pragma: allowlist secret
     resources: {}
     port: 80
-    replicaCount: 2
+    replicaCount: 1
     host: php-app.local
     tls:
       secretRef: php-app-tls # pragma: allowlist secret
