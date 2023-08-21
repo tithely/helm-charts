@@ -2,6 +2,7 @@
 project: breeze
 environment: qa
 version: 1.0.0
+type: php
 
 onepassworditems:
   - name: qa-environemnt-variables
