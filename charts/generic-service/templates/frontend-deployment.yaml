@@ -56,6 +56,11 @@ spec:
             - name: DD_PROFILING_ENABLED
               value: "true"
           envFrom: {{- toYaml $value.envFrom | nindent 12 }}
+          command: {{ $value.command  }}
+          args:
+          {{- range $value.args }}
+            - {{ . }}
+          {{- end }}
           ports:
             - name: http
               containerPort: {{ $value.port }}
