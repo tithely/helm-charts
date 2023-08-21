@@ -15,3 +15,7 @@ app.kubernetes.io/name: worker
 app.kubernetes.io/component: worker
 app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
 {{- end }}
+
+{{- define "path" }}
+    path: {{ .Values.project }}/{{ .Values.environment }}
+{{- end }}
