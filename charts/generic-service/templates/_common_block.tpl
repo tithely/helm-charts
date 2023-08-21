@@ -17,5 +17,5 @@ app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
 {{- end }}
 
 {{- define "path" }}
-    path: {{ .Values.project }}/{{ .Values.environment }}
+    path: {{ .Values.project | replace "_" "/" }}/{{ .Values.environment }}
 {{- end }}
