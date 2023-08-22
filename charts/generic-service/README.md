@@ -1,6 +1,6 @@
 # generic-service
 
-![Version: 1.0.60](https://img.shields.io/badge/Version-1.0.60-informational?style=flat-square)
+![Version: 1.0.65](https://img.shields.io/badge/Version-1.0.65-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
@@ -21,7 +21,7 @@ A Helm chart for Kubernetes
 | frontend[0].name | string | `"frontend"` |  |
 | frontend[0].port | int | `80` |  |
 | frontend[0].pullPolicy | string | `"IfNotPresent"` |  |
-| frontend[0].replicaCount | int | `2` |  |
+| frontend[0].replicaCount | int | `1` |  |
 | frontend[0].resources | object | `{}` |  |
 | frontend[0].secretsRef | string | `"qa-environment-variables"` |  |
 | frontend[0].tls.secretRef | string | `"php-app-tls"` |  |
@@ -29,6 +29,7 @@ A Helm chart for Kubernetes
 | onepassworditems[0].itemPath | string | `"vaults/EnvironmentVariables/items/breeze-qa"` |  |
 | onepassworditems[0].name | string | `"qa-environemnt-variables"` |  |
 | project | string | `"breeze"` | To nest folders in flux use underscores which will map to sub-directories |
+| type | string | `"php"` |  |
 | version | string | `"1.0.0"` |  |
 | worker[0].enabled | bool | `true` |  |
 | worker[0].image | string | `"php:8.1.22-apache-bullseye"` |  |
