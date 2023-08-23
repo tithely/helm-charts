@@ -1,3 +1,6 @@
+# Sources
+https://github.com/traefik/traefik/blob/master/docs/content/routing/providers/kubernetes-crd.md
+
 # generic-service
 
 ![Version: 1.0.68](https://img.shields.io/badge/Version-1.0.68-informational?style=flat-square)
