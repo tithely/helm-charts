@@ -9,6 +9,7 @@ spec:
   entryPoints:
     - websecure
   routes:
+    # Anthon this wildcard works- match: HostRegexp(`{subdomain:[a-z0-9]+}.breezeqa.com`)
     - match: Host(`{{ $value.host }}`)
       kind: Rule
       services:
