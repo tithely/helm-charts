@@ -3,7 +3,7 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: {{ $value.name | quote }}
+  name: {{ $.Release.Namespace }}-{{ $value.name }}
   namespace: traefik
 spec:
   entryPoints:
