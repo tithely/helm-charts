@@ -4,7 +4,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: {{ $value.name | quote }}
-  namespace: {{ $.Release.NameSpace | quote }}
+  namespace: traefik
 spec:
   entryPoints:
     - websecure
@@ -13,9 +13,10 @@ spec:
       kind: Rule
       services:
         - name: {{ $value.name | quote }}
+          namespace: {{ $.Release.NameSpace | quote }}
           port: {{ $value.port }}
   tls:
-    domains:
-      - main: {{ $value.host | quote }}
+    # domains:
+    #   - main: {{ $value.host | quote }}
     secretName:  {{ $value.tls.secretRef | quote }}
 {{- end -}}
