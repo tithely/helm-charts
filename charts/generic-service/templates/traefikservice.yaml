@@ -1,0 +1,15 @@
+{{- range $key, $value := .Values.frontend }}
+---
+apiVersion: traefik.io/v1alpha1
+kind: TraefikService
+metadata:
+  name: {{ $value.name }}
+  namespace: {{ $.Release.Namespace | quote }}
+
+spec:
+  weighted:
+    services:
+      - name: {{ $value.name }}
+        port: {{ $value.port }}
+        weight: 1
+{{- end }}
