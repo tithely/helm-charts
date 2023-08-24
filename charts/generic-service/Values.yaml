@@ -3,7 +3,7 @@ project: breeze
 environment: qa
 version: 1.0.0
 type: php
-postdeploy: "curl -I --location --request POST 'https://api.breezeqa.com/api/v2/breezyman/postdeploy' --header 'Accept: application/json' --header 'Authorization: Bearer catinthehat'"
+postdeploy: "echo 'exampe'"
 
 onepassworditems:
   - name: qa-environemnt-variables
