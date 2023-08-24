@@ -25,5 +25,5 @@ spec:
       restartPolicy: Never
       containers:
       - name: post-upgrade-job
-        image: "alpine:3.3"
-        command: [{{ .Values.postdeploy | quote }}]
+        image: "curlimages/curl"
+        command: ["/bin/bash","{{ .Values.postdeploy }}"]
