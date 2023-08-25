@@ -1,4 +1,13 @@
 apiVersion: v2
 name: generic-service
 description: A Helm chart for Kubernetes
-version: 1.0.70
+version: 1.0.71
+dependencies:
+  - name: memcached
+    version: 6.6.x
+    repository: https://charts.bitnami.com/bitnami
+    condition: memcached.enabled
+  - name: redis
+    version: 17.16.x
+    repository: https://charts.bitnami.com/bitnami
+    condition: redis.enabled
