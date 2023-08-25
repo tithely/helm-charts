@@ -1,6 +1,6 @@
 # generic-service
 
-![Version: 1.0.71](https://img.shields.io/badge/Version-1.0.71-informational?style=flat-square)
+![Version: 1.0.78](https://img.shields.io/badge/Version-1.0.78-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
@@ -211,6 +211,7 @@ A Helm chart for Kubernetes
 | memcached.volumePermissions.resources.requests | object | `{}` |  |
 | onepassworditems[0].itemPath | string | `"vaults/EnvironmentVariables/items/breeze-qa"` |  |
 | onepassworditems[0].name | string | `"qa-environemnt-variables"` |  |
+| postdeploy | string | `"echo 'exampe'"` |  |
 | project | string | `"breeze"` | To nest folders in flux use underscores which will map to sub-directories |
 | redis.architecture | string | `"replication"` |  |
 | redis.auth.enabled | bool | `true` |  |

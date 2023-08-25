@@ -3,6 +3,7 @@ project: breeze
 environment: qa
 version: 1.0.0
 type: php
+postdeploy: "echo 'exampe'"
 
 onepassworditems:
   - name: qa-environemnt-variables
