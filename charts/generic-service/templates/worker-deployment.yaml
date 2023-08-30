@@ -73,5 +73,6 @@ spec:
         - name: {{ $value.name }}
           secret:
             secretName: {{ $value.secretName }}
+            defaultMode: 384
         {{- end }}
 {{- end -}}
