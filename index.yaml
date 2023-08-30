@@ -10,6 +10,23 @@ entries:
     - https://github.com/tithely/helm-charts/releases/download/generic-service-1.1.0/generic-service-1.1.0.tgz
     version: 1.1.0
   - apiVersion: v2
+    created: "2023-08-30T20:19:54.38607955Z"
+    dependencies:
+    - condition: memcached.enabled
+      name: memcached
+      repository: https://charts.bitnami.com/bitnami
+      version: 6.6.x
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 17.16.x
+    description: A Helm chart for Kubernetes
+    digest: f076edd597a20de870682c246060bcc188a9d24aec725675e7b25cb9b2141113
+    name: generic-service
+    urls:
+    - https://github.com/tithely/helm-charts/releases/download/generic-service-1.0.81/generic-service-1.0.81.tgz
+    version: 1.0.81
+  - apiVersion: v2
     created: "2023-08-25T16:43:18.60857103Z"
     dependencies:
     - condition: memcached.enabled
@@ -645,4 +662,4 @@ entries:
     urls:
     - https://github.com/tithely/helm-charts/releases/download/generic-service-1.0.2/generic-service-1.0.2.tgz
     version: 1.0.2
-generated: "2023-08-25T16:43:18.608811831Z"
+generated: "2023-08-30T20:19:54.386411058Z"
