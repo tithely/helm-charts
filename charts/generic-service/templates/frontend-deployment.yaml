@@ -71,13 +71,12 @@ spec:
             {{- range $key, $value := $.Values.keyinjection }}
             - name: {{ $value.name }}
               mountPath: {{ $value.mountPath }}
-              readOnly: true
             {{- end }}
       volumes:
         {{- range $key, $value := $.Values.keyinjection }}
         - name: {{ $value.name }}
           secret:
             secretName: {{ $value.secretName }}
-          defaultMode: 384
+            defaultMode: 384
         {{- end }}
 {{- end -}}
