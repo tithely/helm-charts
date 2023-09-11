@@ -11,8 +11,8 @@ spec:
         branch: main
     commit:
       author:
-        email: fluxcdbot@users.noreply.github.com
-        name: fluxcdbot
+        email: tithelybot@users.noreply.github.com
+        name: tithelybot
       messageTemplate: |-
         {{ `{{range .Updated.Images}}{{println .}}{{end}}` }}
     push:
