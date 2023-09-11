@@ -1,6 +1,6 @@
 # generic-service
 
-![Version: feature-tithelybot](https://img.shields.io/badge/Version-feature--tithelybot-informational?style=flat-square)
+![Version: 1.0.81](https://img.shields.io/badge/Version-1.0.81-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
