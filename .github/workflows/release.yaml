@@ -1,58 +1,58 @@
-# name: Release Charts
+name: Release Charts
 
-# on:
-#   push:
-#     branches:
-#       - main
-#       - feature-*
+on:
+  push:
+    branches:
+      - main
+      # - feature-*
 
-# jobs:
-#   release:
-#     # depending on default permission settings for your org (contents being read-only or read-write for workloads), you will have to add permissions
-#     # see: https://docs.github.com/en/actions/security-guides/automatic-token-authentication#modifying-the-permissions-for-the-github_token
-#     permissions:
-#       contents: write
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v3
-#         with:
-#           fetch-depth: 0
+jobs:
+  release:
+    # depending on default permission settings for your org (contents being read-only or read-write for workloads), you will have to add permissions
+    # see: https://docs.github.com/en/actions/security-guides/automatic-token-authentication#modifying-the-permissions-for-the-github_token
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-#       - name: Configure Git
-#         run: |
-#           git config user.name "$GITHUB_ACTOR"
-#           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+      - name: Configure Git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
-#       - name: Install Helm
-#         uses: azure/setup-helm@v3
+      - name: Install Helm
+        uses: azure/setup-helm@v3
 
-#       # https://github.com/helm/chart-releaser-action/issues/74
-#       - name: Add Helm dependencies
-#         run: |
-#           helm repo add bitnami https://charts.bitnami.com/bitnami
+      # https://github.com/helm/chart-releaser-action/issues/74
+      - name: Add Helm dependencies
+        run: |
+          helm repo add bitnami https://charts.bitnami.com/bitnami
 
-#       - name: Run chart-releaser
-#         uses: helm/chart-releaser-action@v1.5.0
-#         env:
-#           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      - name: Run chart-releaser
+        uses: helm/chart-releaser-action@v1.5.0
+        env:
+          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
-#       # - name: Package Helm Charts
-#       #   shell: bash
-#       #   run: |
-#       #     find charts/ -type f -name 'Chart.yaml' | sed -r 's|/[^/]+$||' | sort | uniq | xargs -L 1 helm dep up
-#       #     for d in charts/*/ ; do
-#       #         echo "$d"
-#       #         helm package "$d" -u -d dest
-#       #     done
-#       # - name: Push New Files
-#       #   shell: bash
-#       #   working-directory: dest
-#       #   run: |
-#       #     helm repo index . --url https://raw.githubusercontent.com/tithely/helm-charts/gh-pages/
-#       #     git config user.name "Helm Updater"
-#       #     git config user.email "actions@users.noreply.github.com"
-#       #     git add $(git ls-files -o --exclude-standard)
-#       #     git add index.yaml
-#       #     git commit -m "Updated from ref: $GITHUB_SHA"
-#       #     git push
+      # - name: Package Helm Charts
+      #   shell: bash
+      #   run: |
+      #     find charts/ -type f -name 'Chart.yaml' | sed -r 's|/[^/]+$||' | sort | uniq | xargs -L 1 helm dep up
+      #     for d in charts/*/ ; do
+      #         echo "$d"
+      #         helm package "$d" -u -d dest
+      #     done
+      # - name: Push New Files
+      #   shell: bash
+      #   working-directory: dest
+      #   run: |
+      #     helm repo index . --url https://raw.githubusercontent.com/tithely/helm-charts/gh-pages/
+      #     git config user.name "Helm Updater"
+      #     git config user.email "actions@users.noreply.github.com"
+      #     git add $(git ls-files -o --exclude-standard)
+      #     git add index.yaml
+      #     git commit -m "Updated from ref: $GITHUB_SHA"
+      #     git push
