@@ -68,11 +68,20 @@ spec:
               mountPath: {{ $value.mountPath }}
               readOnly: true
             {{- end }}
+            {{- range $key, $value := $value.volumeMounts }}
+            - name: {{ $value.name }}
+              mountPath: {{ $value.mountPath }}
+            {{- end }}
       volumes:
         {{- range $key, $value := $.Values.keyinjection }}
         - name: {{ $value.name }}
           secret:
             secretName: {{ $value.secretName }}
             defaultMode: 384
+        {{- end }}
+        {{- range $key, $value := $value.volumeMounts }}
+        - name: {{ $value.name }}
+          persistentVolumeClaim:
+            claimName: {{ $value.claimName }}
         {{- end }}
 {{- end -}}
