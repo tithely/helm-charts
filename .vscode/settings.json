@@ -16,5 +16,6 @@
       "command": "direnv allow .",
       "runIn": "terminal"
     }
-  ]
+  ],
+  "GitHooks.hooksDirectory": "/Users/anthonymenefee/Documents/GitHub/helm-charts/.git/hooks"
 }

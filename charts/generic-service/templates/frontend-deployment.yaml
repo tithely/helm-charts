@@ -78,7 +78,7 @@ spec:
               mountPath: {{ $value.mountPath }}
             {{- end }}
       volumes:
-        {{- range $key, $value := $value.volumeMounts }}
+        {{- range $key, $value := $.Values.keyinjection }}
         - name: {{ $value.name }}
           secret:
             secretName: {{ $value.secretName }}
