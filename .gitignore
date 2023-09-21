@@ -1,4 +1,4 @@
 .DS_Store
 test.yaml
 out.yaml
-.vscode/settings.json
+.vscode/*
