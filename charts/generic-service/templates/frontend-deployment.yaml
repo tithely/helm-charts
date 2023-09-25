@@ -84,7 +84,7 @@ spec:
             secretName: {{ $value.secretName }}
             defaultMode: 384
         {{- end }}
-        {{- range $key, $value := $value.volumeMounts }}
+        {{- range $key, $value := $value.volumes }}
         - name: {{ $value.name }}
           persistentVolumeClaim:
             claimName: {{ $value.claimName }}
