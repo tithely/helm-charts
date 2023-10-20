@@ -9,8 +9,8 @@ spec:
   entryPoints:
     - websecure
   routes:
-    {{- if $value.clientIP }} # Match to clientIP instead of host
-    - match: ClientIP(`{{ $value.clientIP }}`)
+    {{- if $value.headers.enabled }} # Match to custom header instead of host
+    - match: Headers(`{{ $value.headers.key }}`, `{{ $value.headers.value }}`)
     {{- else if contains "*." $value.host }}
     - match: HostRegexp(`{subdomain:[a-z0-9]+}.{{ $value.host | replace "*." "" }}`)
     {{- else }}
