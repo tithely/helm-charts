@@ -36,7 +36,7 @@ spec:
         tags.datadoghq.com/version: {{ $.Values.version | quote }}
     spec:
       containers:
-        - name: {{ $.Chart.Name }}
+        - name: {{ $value.name }}
           image: "{{ $value.image }}"
           imagePullPolicy: {{ $value.pullPolicy }}
           env:
