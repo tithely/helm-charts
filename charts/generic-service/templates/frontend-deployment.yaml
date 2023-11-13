@@ -79,7 +79,7 @@ spec:
             {{- end }}
       {{- if eq $value.initContainer.enabled true }}
       initContainers:
-        name: {{ $value.initContainer.name }}
+        name: {{ $value.initContainer.name }}-init
         image: {{ $value.initContainer.image }}
         command: {{ $value.initContainer.command  }}
       {{- end }}
