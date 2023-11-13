@@ -11,7 +11,7 @@ spec:
   template:
     spec:
       containers:
-      - name: {{ $value.name  }}
+      - name: {{ $value.name }}-job
         command: {{ $value.command  }}
         image: "{{ $value.image  }}"
         restartPolicy: {{ $value.restartPolicy  }}
