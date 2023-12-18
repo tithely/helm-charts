@@ -3,6 +3,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
+  name: {{ $value.name }}
   generateName: {{ $.Release.Namespace }}-migrations-job-
   namespace: {{ $.Release.Namespace }}
 spec:
