@@ -79,9 +79,9 @@ spec:
             {{- end }}
       {{- if eq $value.initContainer.enabled true }}
       initContainers:
-        name: {{ $value.initContainer.name }}-init
-        image: {{ $value.initContainer.image }}
-        command: {{ $value.initContainer.command  }}
+        - name: {{ $value.initContainer.name }}-init
+          image: {{ $value.initContainer.image }}
+          command: {{ $value.initContainer.command  }}
       {{- end }}
       volumes:
         {{- range $key, $value := $.Values.keyinjection }}
