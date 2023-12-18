@@ -13,9 +13,9 @@ spec:
     spec:
       containers:
       - name: {{ $value.name }}-job
-        command: {{ $value.command  }}
-        image: "{{ $value.image  }}"
-        restartPolicy: {{ $value.restartPolicy  }}
+        command: {{ $value.command }}
+        image: "{{ $value.image }}"
+        restartPolicy: {{ $value.restartPolicy }}
         envFrom: {{- toYaml $value.envFrom | nindent 12 }}
 {{- end -}}
 {{- end -}}
