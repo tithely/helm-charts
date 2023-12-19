@@ -16,6 +16,7 @@ spec:
       - name: {{ $value.name }}-job
         command: {{ $value.command }}
         image: "{{ $value.image }}"
+        args: {{ $value.args }}
         envFrom: {{- toYaml $value.envFrom | nindent 12 }}
 {{- end -}}
 {{- end -}}
