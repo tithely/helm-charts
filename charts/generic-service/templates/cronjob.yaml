@@ -1,0 +1,23 @@
+{{- range $key, $value := .Values.cronjob }}
+{{- if eq $value.enabled true }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ $value.name }}
+  namespace: {{ $.Release.Namespace }}
+spec:
+  schedule: "{{ $value.schedule }}"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: {{ $value.name }}-cronjob
+            image: "{{ $value.image }}"
+            imagePullPolicy: IfNotPresent
+            command: {{ $value.command }}
+            args: {{ $value.args }}
+            envFrom: {{- toYaml $value.envFrom | nindent 12 }}
+          restartPolicy: OnFailure
+{{- end -}}
+{{- end -}}
