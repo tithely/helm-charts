@@ -81,7 +81,8 @@ spec:
       initContainers:
         - name: {{ $value.initContainer.name }}-init
           image: {{ $value.initContainer.image }}
-          command: {{ $value.initContainer.command  }}
+          command: {{ $value.initContainer.command }}
+          args: {{ $value.initContainer.args }}
       {{- end }}
       volumes:
         {{- range $key, $value := $.Values.keyinjection }}
