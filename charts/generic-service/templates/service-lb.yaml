@@ -10,6 +10,7 @@ metadata:
     app.kubernetes.io/name: {{ $value.name }}
     app.kubernetes.io/component: service
     app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
+  annotations:
     {{- if eq $value.loadBalancer.type "network" }}
     service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: instance
     service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
