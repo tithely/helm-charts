@@ -77,15 +77,15 @@ spec:
             - name: {{ $value.name }}
               mountPath: {{ $value.mountPath }}
             {{- end }}
-          {{- if $value.initContainer }}
-          {{- if eq $value.initContainer.enabled true }}
-          initContainers:
-            - name: {{ $value.initContainer.name }}-init
-              image: {{ $value.initContainer.image }}
-              command: {{ $value.initContainer.command }}
-              args: {{ $value.initContainer.args }}
-          {{- end }}
-          {{- end }}
+      {{- if $value.initContainer }}
+      {{- if eq $value.initContainer.enabled true }}
+      initContainers:
+        - name: {{ $value.initContainer.name }}-init
+          image: {{ $value.initContainer.image }}
+          command: {{ $value.initContainer.command }}
+          args: {{ $value.initContainer.args }}
+      {{- end }}
+      {{- end }}
       volumes:
         {{- range $key, $value := $.Values.keyinjection }}
         - name: {{ $value.name }}
