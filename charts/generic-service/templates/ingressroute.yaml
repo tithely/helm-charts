@@ -1,5 +1,5 @@
 {{- range $key, $value := .Values.frontend }}
-{{- if not $value.loadBalancer.enabled }}
+{{- if or (empty $value.loadBalancer) (not $value.loadBalancer.enabled) }}
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
