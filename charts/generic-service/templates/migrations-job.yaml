@@ -1,3 +1,4 @@
+{{- if .Values.migrations }}
 {{- range $key, $value := .Values.migrations }}
 {{- if eq $value.enabled true }}
 apiVersion: batch/v1
@@ -18,5 +19,6 @@ spec:
         image: "{{ $value.image }}"
         args: {{ $value.args }}
         envFrom: {{- toYaml $value.envFrom | nindent 12 }}
+{{- end -}}
 {{- end -}}
 {{- end -}}
