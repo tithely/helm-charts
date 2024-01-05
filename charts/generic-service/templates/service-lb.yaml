@@ -27,6 +27,7 @@ spec:
   - name: https
     targetPort: {{ $value.port }}
     port: 443
+    protocol: TCP
   selector:
     app.kubernetes.io/name: {{ $value.name }}
     app.kubernetes.io/component: web
