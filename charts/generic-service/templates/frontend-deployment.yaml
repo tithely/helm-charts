@@ -84,6 +84,7 @@ spec:
           image: {{ $value.initContainer.image }}
           command: {{ $value.initContainer.command }}
           args: {{ $value.initContainer.args }}
+          envFrom: {{- toYaml $value.envFrom | nindent 12 }}
       {{- end }}
       {{- end }}
       volumes:
