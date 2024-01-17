@@ -39,6 +39,21 @@ spec:
         - name: {{ $.Chart.Name }}
           image: "{{ $value.image }}"
           imagePullPolicy: {{ $value.pullPolicy }}
+          {{- if $value.readinessProbe }}
+          {{- if eq $value.readinessProbe.enabled true }}
+          readinessProbe:
+            failureThreshold: {{ $value.readinessProbe.failureThreshold }}
+            httpGet:
+              host: {{ $value.readinessProbe.httpGet.host }}
+              path: {{ $value.readinessProbe.httpGet.path }}
+              port: {{ $value.readinessProbe.httpGet.port }}
+              scheme: {{ $value.readinessProbe.httpGet.scheme }}
+            initialDelaySeconds: {{ $value.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ $value.readinessProbe.periodSeconds }}
+            successThreshold: {{ $value.readinessProbe.successThreshold }}
+            timeoutSeconds: {{ $value.readinessProbe.timeoutSeconds }}
+          {{- end }}
+          {{- end }}
           env:
             - name: DD_ENV
               valueFrom:
