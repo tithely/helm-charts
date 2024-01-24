@@ -43,11 +43,8 @@ spec:
           {{- if eq $value.readinessProbe.enabled true }}
           readinessProbe:
             failureThreshold: {{ $value.readinessProbe.failureThreshold }}
-            httpGet:
-              host: {{ $value.readinessProbe.httpGet.host }}
-              path: {{ $value.readinessProbe.httpGet.path }}
-              port: {{ $value.readinessProbe.httpGet.port }}
-              scheme: {{ $value.readinessProbe.httpGet.scheme }}
+            tcpSocket:
+              port: {{ $value.readinessProbe.tcpSocket.port }}
             initialDelaySeconds: {{ $value.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ $value.readinessProbe.periodSeconds }}
             successThreshold: {{ $value.readinessProbe.successThreshold }}
