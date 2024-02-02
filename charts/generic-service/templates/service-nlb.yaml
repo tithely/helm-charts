@@ -1,5 +1,5 @@
 {{- range $key, $value := .Values.frontend }}
-{{- if and $value.loadBalancer $value.loadBalancer.enabled }}
+{{- if and $value.loadBalancer $value.loadBalancer.enabled (eq $value.loadBalancer.type "network") }}
 ---
 apiVersion: v1
 kind: Service
@@ -11,13 +11,11 @@ metadata:
     app.kubernetes.io/component: service
     app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
   annotations:
-    {{- if eq $value.loadBalancer.type "network" }}
     service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: instance
     service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
     service.beta.kubernetes.io/aws-load-balancer-type: external
     service.beta.kubernetes.io/aws-load-balancer-ssl-cert: {{ $value.loadBalancer.sslCertArn }}
     service.beta.kubernetes.io/aws-load-balancer-ssl-ports: https # References below name
-    {{- end }}
 spec:
   ports:
   - name: http
