@@ -12,7 +12,7 @@ metadata:
     app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
   annotations:
     service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80,"HTTPS":443}]' # Specify the ports to listen on
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]' # Specify the ports to listen on
     alb.ingress.kubernetes.io/ssl-redirect: 443 # Redirect HTTP to HTTPS
     # alb.ingress.kubernetes.io/wafv2-acl-arn: # TBD
 spec:
