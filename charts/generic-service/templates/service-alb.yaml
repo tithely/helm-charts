@@ -21,8 +21,7 @@ spec:
   - hosts:
     - {{ $value.loadBalancer.tls.hosts }}
   rules:
-  - host: {{ $value.loadBalancer.rules.host }} # URL to access the application
-    https:
+  - https:
       paths:
         - path: /
           pathType: Prefix
