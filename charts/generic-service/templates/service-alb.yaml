@@ -8,12 +8,10 @@ metadata:
   namespace: {{ $.Release.Namespace | quote }}
   labels:
     app.kubernetes.io/name: {{ $value.name }}
-    app.kubernetes.io/component: service
+    app.kubernetes.io/component: Ingress
     app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
   annotations:
     service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
-    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: {{ $value.loadBalancer.sslCertArn }}
-    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: https # References below name
 spec:
   ingressClassName: alb
   tls: # Certificate discovery
@@ -34,7 +32,7 @@ spec:
               port: 443
   selector:
     app.kubernetes.io/name: {{ $value.name }}
-    app.kubernetes.io/component: ingress
+    app.kubernetes.io/component: web
     app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
   type: LoadBalancer
 {{- end }}
