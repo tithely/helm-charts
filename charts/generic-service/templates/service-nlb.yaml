@@ -1,5 +1,5 @@
 {{- range $key, $value := .Values.frontend }}
-{{- if and $value.loadBalancer $value.loadBalancer.enabled (eq $value.loadBalancer.type "network")}}
+{{- if and $value.loadBalancer $value.loadBalancer.enabled (eq $value.loadBalancer.type "network") }}
 ---
 apiVersion: v1
 kind: Service
