@@ -12,6 +12,9 @@ metadata:
     app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
   annotations:
     service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80,"HTTPS":443}]' # Specify the ports to listen on
+    alb.ingress.kubernetes.io/ssl-redirect: 443 # Redirect HTTP to HTTPS
+    # alb.ingress.kubernetes.io/wafv2-acl-arn: # TBD
 spec:
   ingressClassName: alb
   tls: # Certificate discovery
@@ -19,16 +22,13 @@ spec:
     - {{ $value.loadBalancer.tls.hosts }}
   rules:
   - host: {{ $value.loadBalancer.rules.host }} # URL to access the application
-    http:
+    https:
       paths:
         - path: /
           pathType: Prefix
           backend:
             service:
-              name: {{ $value.name }}
-              port: 80
-            redirectTo:
-              scheme: https
+              name: {{ $value.name }} # This is the name of the kubernetes service that will become a target group
               port: 443
   selector:
     app.kubernetes.io/name: {{ $value.name }}
