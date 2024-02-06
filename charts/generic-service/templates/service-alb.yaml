@@ -46,6 +46,7 @@ metadata:
     app.kubernetes.io/component: service
     app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
 spec:
+  type: NodePort
   ports:
   - name: http
     targetPort: {{ $value.port }}
