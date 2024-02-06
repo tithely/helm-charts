@@ -21,14 +21,15 @@ spec:
   - hosts:
     - {{ $value.loadBalancer.tls.hosts }}
   rules:
-  - https:
-      paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: {{ $value.name }} # This is the name of the kubernetes service that will become a target group
-              port: 443
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ $value.name }} # This is the name of the kubernetes service that will become a target group
+                port:
+                  number: 80
   selector:
     app.kubernetes.io/name: {{ $value.name }}
     app.kubernetes.io/component: web
