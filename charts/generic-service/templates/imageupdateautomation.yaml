@@ -22,5 +22,5 @@ spec:
     kind: GitRepository
     name: flux-system
   update:
-    {{- template "path" . }}
+    {{- $value.path }}
     strategy: Setters
