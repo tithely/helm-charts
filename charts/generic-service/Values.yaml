@@ -4,7 +4,6 @@ environment: qa
 version: 1.0.0
 type: php
 postdeploy: "echo 'exampe'"
-path: ./apps/communications-service/qa
 onepassworditems:
   - name: qa-environemnt-variables
     itemPath: "vaults/EnvironmentVariables/items/breeze-qa"
