@@ -32,7 +32,7 @@ spec:
               service:
                 name: {{ $value.name }} # This is the name of the kubernetes service that will become a target group
                 port:
-                  number: 80
+                  number: {{ $value.loadBalancer.port }}
   selector:
     app.kubernetes.io/name: {{ $value.name }}
     app.kubernetes.io/component: web
