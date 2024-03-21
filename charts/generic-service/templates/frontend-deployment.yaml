@@ -95,7 +95,10 @@ spec:
         - name: {{ $value.initContainer.name }}-init
           image: {{ $value.initContainer.image }}
           command: {{ $value.initContainer.command }}
-          args: {{ $value.initContainer.args }}
+          args:
+          {{- range $value.args }}
+            - {{ . }}
+          {{- end }}
           envFrom: {{- toYaml $value.envFrom | nindent 12 }}
       {{- end }}
       {{- end }}
