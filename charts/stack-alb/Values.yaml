@@ -1,0 +1,13 @@
+# Default values for stack-alb.
+# This is a YAML-formatted file.
+
+name: stack-name
+
+loadBalancer:
+  enabled: true
+  name: k8s-STACKNAME-qa
+  type: application
+  tls:
+    hosts: STACKNAME.tithelyqa.com
+tls:
+  secretRef: tithelyqa.com # pragma: allowlist secret

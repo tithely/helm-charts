@@ -1,0 +1,64 @@
+{{- range $key, $value := .Values.frontend }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ $value.name }}
+  namespace: {{ $.Release.Namespace | quote }}
+  labels:
+    app.kubernetes.io/name: {{ $value.name }}
+    app.kubernetes.io/component: Ingress
+    app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
+  annotations:
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]' # Specify the ports to listen on
+    alb.ingress.kubernetes.io/ssl-redirect: "443" # Redirect HTTP to HTTPS
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/security-groups: allow-http-from-all
+    alb.ingress.kubernetes.io/manage-backend-security-group-rules: "true"
+    alb.ingress.kubernetes.io/ip-address-type: ipv4 # This is the default value
+    alb.ingress.kubernetes.io/load-balancer-name: {{ $value.loadBalancer.name }}
+    alb.ingress.kubernetes.io/healthcheck-protocol: {{ $value.loadBalancer.healthcheckProtocol | default "HTTP" }}
+    alb.ingress.kubernetes.io/healthcheck-port: {{ $value.loadBalancer.healthcheckPort | default "traffic-port" }}
+    alb.ingress.kubernetes.io/healthcheck-path: {{ $value.loadBalancer.healthcheckPath | default "/health" }}
+    alb.ingress.kubernetes.io/success-codes: {{ $value.loadBalancer.successCodes | default "200" | quote }}
+    # alb.ingress.kubernetes.io/wafv2-acl-arn: # TBD
+spec:
+  ingressClassName: alb
+  tls: # Certificate discovery
+  - hosts:
+    - {{ $value.loadBalancer.tls.hosts }}
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ $value.name }} # This is the name of the kubernetes service that will become a target group
+                port:
+                  number: {{ $value.loadBalancer.port | default 80 }}
+  selector:
+    app.kubernetes.io/name: {{ $value.name }}
+    app.kubernetes.io/component: web
+    app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $value.name }}
+  namespace: {{ $.Release.Namespace | quote }}
+  labels:
+    app.kubernetes.io/name: {{ $value.name }}
+    app.kubernetes.io/component: service
+    app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    targetPort: {{ $value.port }} # Port that the container listens on
+    port: {{ $value.port }} # Port that the service listens on
+  selector:
+    app.kubernetes.io/name: {{ $value.name }}
+    app.kubernetes.io/component: web
+    app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
+{{- end }}
