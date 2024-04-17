@@ -38,5 +38,6 @@ spec:
           groupID: {{ $value.loadBalancer.securityGroupID }}
       ports:
       - protocol: TCP
+      - port:
 {{- end }}
 {{- end }}
