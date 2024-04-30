@@ -45,10 +45,6 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.labels['tags.datadoghq.com/service']
-            - name: DD_VERSION
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.labels['tags.datadoghq.com/version']
             - name: DD_APPSEC_ENABLED
               value: "true"
             - name: DD_PROFILING_ENABLED
