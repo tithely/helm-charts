@@ -9,7 +9,6 @@ metadata:
     # Datadog
     tags.datadoghq.com/env: {{ $.Values.environment | quote }}
     tags.datadoghq.com/service: {{ $.Values.project | quote }}
-    tags.datadoghq.com/version: {{ $.Values.version | quote }}
   annotations:
     # TODO
     #update the following to support projection
@@ -33,7 +32,6 @@ spec:
         # com.datadoghq.ad.logs: '[{"service": {{ $.Values.project | quote }} }]'
         tags.datadoghq.com/env: {{ $.Values.environment | quote }}
         tags.datadoghq.com/service: {{ $.Values.project | quote }}
-        tags.datadoghq.com/version: {{ $.Values.version | quote }}
     spec:
       containers:
         - name: {{ $.Chart.Name }}
