@@ -9,6 +9,7 @@ metadata:
     # Datadog
     tags.datadoghq.com/env: {{ $.Values.environment | quote }}
     tags.datadoghq.com/service: {{ $.Values.project | quote }}
+    tags.datadoghq.com/version: {{ $.Values.version | quote }}
   annotations:
     # TODO
     #update the following to support projection
@@ -31,6 +32,7 @@ spec:
         # com.datadoghq.ad.logs: '[{"service": {{ $.Values.project | quote }} }]'
         tags.datadoghq.com/env: {{ $.Values.environment | quote }}
         tags.datadoghq.com/service: {{ $.Values.project | quote }}
+        tags.datadoghq.com/version: {{ $.Values.version | quote }}
     spec:
       containers:
         - name: {{ $.Chart.Name }}
@@ -45,6 +47,10 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.labels['tags.datadoghq.com/service']
+            - name: DD_VERSION
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['tags.datadoghq.com/version']
             - name: DD_APPSEC_ENABLED
               value: "true"
             - name: DD_PROFILING_ENABLED
@@ -73,9 +79,9 @@ spec:
             secretName: {{ $value.secretName }}
             defaultMode: 384
         {{- end }}
-        {{- range $key, $value := $value.volumeMounts }}
+        {{- range $key, $value := $value.volumes }}
         - name: {{ $value.name }}
           persistentVolumeClaim:
-            claimName: {{ $value.claimName }}
+            claimName: {{ $value.persistentVolumeClaim.claimName }}
         {{- end }}
 {{- end -}}
