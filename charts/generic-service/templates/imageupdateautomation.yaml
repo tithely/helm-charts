@@ -1,5 +1,5 @@
 ---
-apiVersion: image.toolkit.fluxcd.io/v1beta1
+apiVersion: image.toolkit.fluxcd.io/v1beta2
 kind: ImageUpdateAutomation
 metadata:
   name: {{ .Release.Name | quote }}
@@ -14,7 +14,7 @@ spec:
         email: tithelybot@users.noreply.github.com
         name: tithelybot
       messageTemplate: |-
-        {{ `{{range .Updated.Images}}{{println .}}{{end}}` }}
+        {{ `{{range .Changed.Images}}{{println .}}{{end}}` }}
     push:
       branch: main
   interval: 1m0s
