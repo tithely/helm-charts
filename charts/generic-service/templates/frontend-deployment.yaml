@@ -74,10 +74,17 @@ spec:
           {{- range $value.args }}
             - {{ . }}
           {{- end }}
+          {{- if and $value.port.map (eq $value.port.map "true") }}
+          ports:
+            - name: {{ $value.port.name }}
+              containerPort: {{ $value.port.containerPort }}
+              protocol: TCP
+          {{- else }}
           ports:
             - name: http
               containerPort: {{ $value.port }}
               protocol: TCP
+          {{- end }}
           resources:
             {{- toYaml $value.resources | nindent 12 }}
           volumeMounts:

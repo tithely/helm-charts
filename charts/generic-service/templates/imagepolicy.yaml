@@ -23,12 +23,20 @@ metadata:
   name: {{ $.Release.Namespace }}-{{ $value.name }}
   namespace: flux-system
 spec:
+{{- if not (or (empty $value.imagepolicy.repository)) }}
   filterTags:
     extract: $ts
     pattern: {{ $value.imagepolicy.pattern }}
+{{- end -}}
   imageRepositoryRef:
     name: {{ $.Values.project | replace "_" "-"  }}
+{{- if and $value.imagepolicy.repository (eq $value.imagepolicy.repository "docker") }}
+  policy:
+    semver:
+      range: {{ $value.imagepolicy.semverRange }}
+{{- else -}}
   policy:
     numerical:
       order: asc
+{{- end -}}
 {{- end -}}
