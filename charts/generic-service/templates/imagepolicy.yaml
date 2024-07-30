@@ -23,7 +23,7 @@ metadata:
   name: {{ $.Release.Namespace }}-{{ $value.name }}
   namespace: flux-system
 spec:
-  {{- if not (or (empty $value.imagepolicy.repositoryType) (eq $value.imagepolicy.repositoryType "ecr")) }}
+  {{- if (or (empty $value.imagepolicy.repositoryType) (eq $value.imagepolicy.repositoryType "ecr")) }}
   filterTags:
     extract: $ts
     pattern: {{ $value.imagepolicy.pattern }}
@@ -40,4 +40,3 @@ spec:
       order: asc
   {{- end }}
   {{- end }}
-  
