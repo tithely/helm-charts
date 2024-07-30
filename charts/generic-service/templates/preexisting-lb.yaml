@@ -15,7 +15,7 @@ spec:
   ports:
   - name: http
     targetPort: {{ $value.port }} # Port that the container listens on
-    port: {{ $value.port }} # Port that the service listens on
+    port: {{ $value.servicePort | default 80 }} # Port that the service listens on
   selector:
     app.kubernetes.io/name: {{ $value.name }}
     app.kubernetes.io/component: web
@@ -29,7 +29,7 @@ metadata:
 spec:
   serviceRef:
     name: {{ $value.name }}-service # route traffic to the created service
-    port: {{ $value.port }}
+    port: {{ $value.servicePort | default 80 }}
   targetGroupARN: {{ $value.loadBalancer.targetGroupARN }}
   networking:
     ingress:
