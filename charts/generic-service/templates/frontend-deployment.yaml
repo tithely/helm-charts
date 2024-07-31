@@ -35,6 +35,10 @@ spec:
         tags.datadoghq.com/service: {{ $.Values.project | quote }}
         tags.datadoghq.com/version: {{ $.Values.version | quote }}
     spec:
+      {{- if and $value.imagepolicy.repositoryType (eq $value.imagepolicy.repositoryType "docker") }}
+      imagePullSecrets:
+        - name: docker-registry-credentials
+      {{- end }}
       containers:
         - name: {{ $.Chart.Name }}
           image: "{{ $value.image }}"
