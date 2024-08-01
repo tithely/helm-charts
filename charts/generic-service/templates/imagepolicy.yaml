@@ -29,7 +29,11 @@ spec:
     pattern: {{ $value.imagepolicy.pattern }}
   {{- end }}
   imageRepositoryRef:
-    name: {{ $.Values.project | replace "_" "-"  }}
+    {{- if and $value.imagepolicy.repositoryType (eq $value.imagepolicy.repositoryType "docker") }}
+    name: {{ $.Values.project | replace "_" "-" }}-docker
+    {{- else }}
+    name: {{ $.Values.project | replace "_" "-" }}
+    {{- end }}
   {{- if and $value.imagepolicy.repositoryType (eq $value.imagepolicy.repositoryType "docker") }}
   policy:
     semver:
