@@ -15,7 +15,7 @@ metadata:
     #update the following to support projection
     operator.1password.io/item-path: "vaults/EnvironmentVariables/items/{{ $.Values.project }}-{{ $.Values.environment }}"
     operator.1password.io/auto-restart: "true"
-    ad.datadoghq.com/{{ $.Chart.Name }}.logs: "[{\"source\": \"{{ $value.type }}\"}]"
+    ad.datadoghq.com/{{ $value.name }}.logs: "[{\"source\": \"{{ $value.type }}\"}]"
 spec:
   replicas: {{ $value.replicaCount }}
   selector:

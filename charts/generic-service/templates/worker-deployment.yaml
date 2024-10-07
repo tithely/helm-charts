@@ -14,7 +14,7 @@ metadata:
     # TODO
     #update the following to support projection
     operator.1password.io/item-path: "vaults/EnvironmentVariables/items/{{ $.Values.project }}-{{ $.Values.environment }}"
-    ad.datadoghq.com/{{ $.Chart.Name }}.logs: "[{\"source\": \"{{ $value.type }}\"}]"
+    ad.datadoghq.com/{{ $value.name }}.logs: "[{\"source\": \"{{ $value.type }}\"}]"
 spec:
   replicas: {{ $value.replicaCount }}
   selector:
