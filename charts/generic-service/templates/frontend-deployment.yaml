@@ -41,7 +41,7 @@ spec:
         - name: docker-registry-credentials
       {{- end }}
       containers:
-        - name: {{ $.Chart.Name }}
+        - name: {{ $value.name }}
           image: "{{ $value.image }}"
           imagePullPolicy: {{ $value.pullPolicy }}
           {{- if $value.readinessProbe }}
