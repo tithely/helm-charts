@@ -9,7 +9,7 @@ metadata:
     # Datadog
     tags.datadoghq.com/env: {{ $.Values.environment | quote }}
     tags.datadoghq.com/service: {{ $.Values.project | quote }}
-    tags.datadoghq.com/version: {{ $.Values.version | quote }}
+    tags.datadoghq.com/version: {{ regexFind "[a-f0-9]{8}$" $value.image | default (regexFind "[^:]+$" $value.image) | quote }}
   annotations:
     # TODO
     #update the following to support projection
@@ -32,7 +32,7 @@ spec:
         admission.datadoghq.com/enabled: "true"
         tags.datadoghq.com/env: {{ $.Values.environment | quote }}
         tags.datadoghq.com/service: {{ $.Values.project | quote }}
-        tags.datadoghq.com/version: {{ $.Values.version | quote }}
+        tags.datadoghq.com/version: {{ regexFind "[a-f0-9]{8}$" $value.image | default (regexFind "[^:]+$" $value.image) | quote }}
       annotations:
         ad.datadoghq.com/{{ $value.name }}.logs: "[{\"source\": \"{{ $value.type }}\"}]"
     spec:
