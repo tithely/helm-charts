@@ -1,3 +1,4 @@
+{{- if or (not .Values.tool) (eq .Values.tool "") (eq .Values.tool "flux") }}
 {{- range $key, $value := .Values.worker }}
 ---
 apiVersion: image.toolkit.fluxcd.io/v1beta2
@@ -44,3 +45,4 @@ spec:
       order: asc
   {{- end }}
   {{- end }}
+{{- end -}}
