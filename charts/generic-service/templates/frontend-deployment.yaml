@@ -36,7 +36,7 @@ spec:
       annotations:
         ad.datadoghq.com/{{ $value.name }}.logs: "[{\"source\": \"{{ $value.type }}\"}]"
     spec:
-      {{- if and (hasKey $value "imagepolicy") $value.imagepolicy.repositoryType (eq $value.imagepolicy.repositoryType "docker") }}
+      {{- if and $value.imagepolicy.repositoryType (eq $value.imagepolicy.repositoryType "docker") }}
       imagePullSecrets:
         - name: docker-registry-credentials
       {{- end }}
