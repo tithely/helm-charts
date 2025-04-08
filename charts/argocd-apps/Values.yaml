@@ -1,0 +1,29 @@
+project:
+environment:
+onepassworditems:
+  - name:
+    itemPath:
+    secretType:
+main:
+  name:
+  enabled:
+  type:
+  image:
+  resources: {}
+  port:
+  replicaCount:
+  loadBalancer:
+    name:
+    targetGroupARN:
+    securityGroupID:
+worker:
+  name:
+  enabled:
+  type:
+  image:
+  command:
+  args:
+    -
+  pullPolicy:
+  resources:
+  replicaCount:
