@@ -1,0 +1,38 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.main.name }}-service
+  namespace: {{ $.Release.Namespace | quote }}
+  labels:
+    app.kubernetes.io/name: {{ .Values.main.name }}
+    app.kubernetes.io/component: service
+    app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    targetPort: {{ .Values.main.port }} # Port that the container listens on
+    port: {{ .Values.main.servicePort | default 80 }} # Port that the service listens on
+  selector:
+    app.kubernetes.io/name: {{ .Values.main.name }}
+    app.kubernetes.io/component: web
+    app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
+---
+apiVersion: elbv2.k8s.aws/v1beta1
+kind: TargetGroupBinding
+metadata:
+  name: {{ .Values.main.name }}-tgb
+  namespace: {{ $.Release.Namespace | quote }}
+spec:
+  serviceRef:
+    name: {{ .Values.main.name }}-service # route traffic to the created service
+    port: {{ .Values.main.servicePort | default 80 }}
+  targetGroupARN: {{ .Values.main.loadBalancer.targetGroupARN }}
+  networking:
+    ingress:
+    - from: 
+      - securityGroup:
+          groupID: {{ .Values.main.loadBalancer.securityGroupID }}
+      ports:
+      - protocol: TCP

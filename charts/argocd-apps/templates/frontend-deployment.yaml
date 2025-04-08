@@ -1,0 +1,116 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.main.name }}
+  namespace: {{ $.Release.Namespace | quote }}
+  labels:
+    # Datadog
+    tags.datadoghq.com/env: {{ $.Values.environment | quote }}
+    tags.datadoghq.com/service: {{ $.Values.project | quote }}
+    tags.datadoghq.com/version: {{ regexFind "[^:]+$" .Values.main.image | quote }}
+  annotations:
+    # TODO
+    #update the following to support projection
+    operator.1password.io/item-path: "vaults/EnvironmentVariables/items/{{ $.Values.project }}-{{ $.Values.environment }}"
+    ad.datadoghq.com/{{ .Values.main.name }}.logs: "[{\"source\": \"{{ .Values.main.type }}\"}]"
+spec:
+  replicas: {{ .Values.main.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Values.main.name }}
+      app.kubernetes.io/component: web
+      app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ .Values.main.name }}
+        app.kubernetes.io/component: web
+        app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
+        # Datadog
+        admission.datadoghq.com/enabled: "true"
+        tags.datadoghq.com/env: {{ $.Values.environment | quote }}
+        tags.datadoghq.com/service: {{ $.Values.project | quote }}
+        tags.datadoghq.com/version: {{ regexFind "[^:]+$" .Values.main.image | quote }}
+      annotations:
+        ad.datadoghq.com/{{ .Values.main.name }}.logs: "[{\"source\": \"{{ .Values.main.type }}\"}]"
+    spec:
+      containers:
+        - name: {{ .Values.main.name }}
+          image: "{{ .Values.main.image }}"
+          imagePullPolicy: {{ .Values.main.pullPolicy }}
+          {{- if .Values.main.readinessProbe }}
+          {{- if eq .Values.main.readinessProbe.enabled true }}
+          readinessProbe:
+            failureThreshold: {{ .Values.main.readinessProbe.failureThreshold }}
+            tcpSocket:
+              port: {{ .Values.main.readinessProbe.tcpSocket.port }}
+            initialDelaySeconds: {{ .Values.main.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.main.readinessProbe.periodSeconds }}
+            successThreshold: {{ .Values.main.readinessProbe.successThreshold }}
+            timeoutSeconds: {{ .Values.main.readinessProbe.timeoutSeconds }}
+          {{- end }}
+          {{- end }}
+          env:
+            - name: DD_ENV
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['tags.datadoghq.com/env']
+            - name: DD_SERVICE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['tags.datadoghq.com/service']
+            - name: DD_VERSION
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['tags.datadoghq.com/version']
+            - name: DD_APPSEC_ENABLED
+              value: "true"
+            - name: DD_PROFILING_ENABLED
+              value: "true"
+          envFrom: {{- toYaml .Values.main.envFrom | nindent 12 }}
+          command: {{ .Values.main.command }}
+          args:
+          {{- range .Values.main.args }}
+            - {{ . }}
+          {{- end }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.main.port }}
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.main.resources | nindent 12 }}
+          volumeMounts:
+            {{- range $key, $value := $.Values.keyinjection }}
+            - name: {{ $value.name }}
+              mountPath: {{ $value.mountPath }}
+            {{- end }}
+            {{- range $key, $value := .Values.main.volumeMounts }}
+            - name: {{ $value.name }}
+              mountPath: {{ $value.mountPath }}
+            {{- end }}
+      {{- if .Values.main.initContainer }}
+      {{- if eq .Values.main.initContainer.enabled true }}
+      initContainers:
+        - name: {{ .Values.main.initContainer.name }}-init
+          image: {{ .Values.main.initContainer.image }}
+          command: {{ .Values.main.initContainer.command }}
+          args:
+          {{- range .Values.main.initContainer.args }}
+            - {{ . }}
+          {{- end }}
+          envFrom: {{- toYaml .Values.main.envFrom | nindent 12 }}
+      {{- end }}
+      {{- end }}
+      volumes:
+        {{- range $key, $value := $.Values.keyinjection }}
+        - name: {{ $value.name }}
+          secret:
+            secretName: {{ $value.secretName }}
+            defaultMode: 384
+        {{- end }}
+        {{- range $key, $value := .Values.main.volumes }}
+        - name: {{ $value.name }}
+          persistentVolumeClaim:
+            claimName: {{ $value.persistentVolumeClaim.claimName }}
+        {{- end }}
