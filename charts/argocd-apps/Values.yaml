@@ -12,10 +12,6 @@ main:
   resources: {}
   port:
   replicaCount:
-  loadBalancer:
-    name:
-    targetGroupARN:
-    securityGroupID:
 worker:
   name:
   enabled:

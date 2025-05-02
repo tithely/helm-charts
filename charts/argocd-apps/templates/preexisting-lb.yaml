@@ -19,6 +19,7 @@ spec:
     app.kubernetes.io/component: web
     app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
 ---
+{{- $configMap := lookup "v1" "ConfigMap" {{ $.Release.Namespace | quote }} "network-config" }}
 apiVersion: elbv2.k8s.aws/v1beta1
 kind: TargetGroupBinding
 annotations:
@@ -35,11 +36,11 @@ spec:
   serviceRef:
     name: {{ .Values.main.name }}-service # route traffic to the created service
     port: {{ .Values.main.servicePort | default 80 }}
-  targetGroupARN: {{ .Values.main.loadBalancer.targetGroupARN }}
+  targetGroupARN: {{ $configMap.data.targetGroupARN }}
   networking:
     ingress:
     - from: 
       - securityGroup:
-          groupID: {{ .Values.main.loadBalancer.securityGroupID }}
+          groupID: {{ $configMap.data.securityGroupID }}
       ports:
       - protocol: TCP
