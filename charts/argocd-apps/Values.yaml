@@ -16,6 +16,11 @@ main:
     name:
     targetGroupARN:
     securityGroupID:
+  pdb:
+    # Set to false to disable creating the PDB for frontend
+    enabled: true
+    # Minimum number of frontend pods that must be available during disruptions
+    minAvailable: 1
 worker:
   name:
   enabled:
@@ -27,3 +32,8 @@ worker:
   pullPolicy:
   resources:
   replicaCount:
+  pdb:
+    # Set to false to disable creating the PDB for frontend
+    enabled: true
+    # Minimum number of frontend pods that must be available during disruptions
+    minAvailable: 1
