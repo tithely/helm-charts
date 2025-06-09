@@ -29,6 +29,9 @@ metadata:
   annotations:
     service.beta.kubernetes.io/aws-load-balancer-target-node-labels: cluster={{ .Values.project }}-{{ .Values.environment }}
 spec:
+  nodeSelector:
+    matchLabels:
+      cluster: {{ .Values.project }}-{{ .Values.environment }}
   serviceRef:
     name: {{ .Values.main.name }}-service # route traffic to the created service
     port: {{ .Values.main.servicePort | default 80 }}
