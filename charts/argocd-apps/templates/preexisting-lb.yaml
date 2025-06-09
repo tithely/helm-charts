@@ -26,6 +26,8 @@ annotations:
 metadata:
   name: {{ .Values.main.name }}-tgb
   namespace: {{ $.Release.Namespace | quote }}
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-target-node-labels: cluster={{ .Values.project }}-{{ .Values.environment }}
 spec:
   serviceRef:
     name: {{ .Values.main.name }}-service # route traffic to the created service
