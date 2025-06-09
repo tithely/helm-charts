@@ -21,6 +21,8 @@ spec:
 ---
 apiVersion: elbv2.k8s.aws/v1beta1
 kind: TargetGroupBinding
+annotations:
+  service.beta.kubernetes.io/aws-load-balancer-target-node-labels: cluster={{ .Values.project }}-{{ .Values.environment }}
 metadata:
   name: {{ .Values.main.name }}-tgb
   namespace: {{ $.Release.Namespace | quote }}
