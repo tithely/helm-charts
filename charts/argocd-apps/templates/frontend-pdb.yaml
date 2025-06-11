@@ -1,0 +1,16 @@
+{{- if and .Values.main.enabled .Values.main.pdb.enabled }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ .Values.main.name }}-frontend-pdb
+  namespace: {{ $.Release.Namespace | quote }}
+  labels:
+    app: {{ .Values.main.name | quote }}
+spec:
+  minAvailable: {{ .Values.main.pdb.minAvailable }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Values.main.name | quote }}
+      app.kubernetes.io/component: web
+      app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
+{{- end }}
