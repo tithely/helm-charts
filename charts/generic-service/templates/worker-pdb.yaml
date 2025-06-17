@@ -1,0 +1,19 @@
+{{- range $key, $value := .Values.worker }}
+  {{- if and $value.enabled (gt $value.replicaCount 1) }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ $value.name }}-pdb
+  namespace: {{ $.Release.Namespace | quote }}
+  labels:
+    app.kubernetes.io/name: {{ $value.name | quote }}
+    app.kubernetes.io/component: worker
+    app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
+spec:
+  minAvailable: {{ $value.pdb.minAvailable | default 1 }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ $value.name | quote }}
+      app.kubernetes.io/component: worker
+      app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
+{{- end }}

@@ -16,6 +16,9 @@ main:
     name:
     targetGroupARN:
     securityGroupID:
+  pdb:
+    # (Optional) Minimum number of frontend pods that must be available during disruptions
+    minAvailable: 1
 worker:
   name:
   enabled:
@@ -27,3 +30,6 @@ worker:
   pullPolicy:
   resources:
   replicaCount:
+  pdb:
+    # (Optional) Minimum number of frontend pods that must be available during disruptions
+    minAvailable: 1

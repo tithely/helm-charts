@@ -1,0 +1,17 @@
+{{- if and .Values.main.enabled (gt .Values.main.replicaCount 1) }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ .Values.main.name }}-pdb
+  labels:
+    app.kubernetes.io/name: {{ .Values.main.name }}
+    app.kubernetes.io/component: web
+    app.kubernetes.io/part-of: {{ .Release.Name }}
+spec:
+  minAvailable: {{ .Values.main.pdb.minAvailable | default 1 }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Values.main.name }}
+      app.kubernetes.io/component: web
+      app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
+{{- end }}
