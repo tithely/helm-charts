@@ -1,17 +1,19 @@
 {{- range $key, $value := .Values.frontend }}
-  {{- if and $value.pdb.enabled $value.name }}
-apiVersion: policy/v1
+{{- $replicas := $value.replicaCount | default 1 }}
+{{- if and $value.enabled (ge (int $replicas) 1) }}apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: {{ $value.name }}-frontend-pdb
-  namespace: {{ $.Release.Namespace | quote }}
+  name: {{ $value.name | default "web" }}-pdb
   labels:
-    app: {{ $value.name | quote }}
+    app.kubernetes.io/name: {{ $value.name | default "web" }}
+    app.kubernetes.io/component: web
+    app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
 spec:
-  minAvailable: {{ .Values.frontend.pdb.minAvailable }}
+  minAvailable: {{ get (default dict $value.pdb) "minAvailable" | default 1 }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ $value.name | quote }}
+      app.kubernetes.io/name: {{ $value.name | default "web" }}
       app.kubernetes.io/component: web
       app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
+{{- end }}
 {{- end }}

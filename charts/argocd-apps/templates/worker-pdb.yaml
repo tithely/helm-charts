@@ -1,16 +1,18 @@
-{{- if and .Values.worker.enabled .Values.worker.pdb.enabled }}
-apiVersion: policy/v1
+{{- $worker := .Values.worker }}
+{{- $replicas := $worker.replicaCount | default 1 }}
+{{- if and $worker.enabled (ge (int $replicas) 1) }}apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: {{ .Values.worker.name }}-worker-pdb
-  namespace: {{ $.Release.Namespace | quote }}
+  name: {{ $worker.name | default "worker" }}-pdb
   labels:
-    app: {{ .Values.worker.name | quote }}
+    app.kubernetes.io/name: {{ $worker.name | default "worker" }}
+    app.kubernetes.io/component: worker
+    app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
 spec:
-  minAvailable: {{ .Values.worker.pdb.minAvailable }}
+  minAvailable: {{ get (default dict $worker.pdb) "minAvailable" | default 1 }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ .Values.worker.name | quote }}
+      app.kubernetes.io/name: {{ $worker.name | default "worker" }}
       app.kubernetes.io/component: worker
       app.kubernetes.io/part-of: {{ $.Release.Name | quote }}
 {{- end }}
