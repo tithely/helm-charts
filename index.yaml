@@ -26,6 +26,14 @@ entries:
     - https://github.com/tithely/helm-charts/releases/download/argocd-app-0.9.3-pdb/argocd-app-0.9.3-pdb.tgz
     version: 0.9.3-pdb
   - apiVersion: v2
+    created: "2025-07-21T05:17:36.110609055Z"
+    description: A Helm chart for applications using ArgoCD
+    digest: f9e8fc12e4d247c026add326f26ce82ce93471fa420cc8bf066f9a9b331ac0ba
+    name: argocd-app
+    urls:
+    - https://github.com/tithely/helm-charts/releases/download/argocd-app-0.9.2/argocd-app-0.9.2.tgz
+    version: 0.9.2
+  - apiVersion: v2
     created: "2025-07-21T03:20:13.714707002Z"
     description: A Helm chart for applications using ArgoCD
     digest: 0fb30e0e5493ec68abfa914edd70f1a9c0ab88e340b831c39239aff53260a090
@@ -107,6 +115,23 @@ entries:
     urls:
     - https://github.com/tithely/helm-charts/releases/download/generic-service-1.999.1/generic-service-1.999.1.tgz
     version: 1.999.1
+  - apiVersion: v2
+    created: "2025-07-21T05:17:36.298843344Z"
+    dependencies:
+    - condition: memcached.enabled
+      name: memcached
+      repository: https://charts.bitnami.com/bitnami
+      version: 6.6.x
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 17.16.x
+    description: A Helm chart for Kubernetes
+    digest: 34ce6eca6723282409c9ffda0e517a5eb066a98526d2c4dc611d804f6aae7adf
+    name: generic-service
+    urls:
+    - https://github.com/tithely/helm-charts/releases/download/generic-service-1.1.7/generic-service-1.1.7.tgz
+    version: 1.1.7
   - apiVersion: v2
     created: "2025-07-21T02:58:26.023427055Z"
     dependencies:
@@ -1448,4 +1473,4 @@ entries:
     urls:
     - https://github.com/tithely/helm-charts/releases/download/generic-service-1.0.2/generic-service-1.0.2.tgz
     version: 1.0.2
-generated: "2025-07-21T04:43:35.072545949Z"
+generated: "2025-07-21T05:17:36.29920563Z"
