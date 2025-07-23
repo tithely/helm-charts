@@ -1,3 +1,5 @@
+{{- if eq .Values.main.autoscaling.enabled true }}
+---
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
@@ -24,6 +26,8 @@ spec:
         type: Utilization
         # Formula is (limit/request) * desiredPercentage
         averageUtilization: {{ div .Values.main.resources.limits.memory .Values.main.resources.requests.memory | mul .Values.main.autoscaling.memoryUtilizationPercentage }}
+{{- end }}
+{{- if eq .Values.worker.autoscaling.enabled true }}
 ---
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
@@ -51,3 +55,4 @@ spec:
         type: Utilization
         # Formula is (limit/request) * desiredPercentage
         averageUtilization: {{ div .Values.worker.resources.limits.memory .Values.worker.resources.requests.memory | mul .Values.worker.autoscaling.memoryUtilizationPercentage }}
+{{- end }}
