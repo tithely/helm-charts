@@ -1,6 +1,7 @@
 {{- if .Values.migrations }}
 {{- range $key, $value := .Values.migrations }}
 {{- if eq $value.enabled true }}
+---
 apiVersion: batch/v1
 kind: Job
 metadata:

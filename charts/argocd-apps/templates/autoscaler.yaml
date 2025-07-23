@@ -1,0 +1,53 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ .Values.main.name }}-autoscaler
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ .Values.main.name }}
+  minReplicas: {{ .Values.main.autoscaling.minReplicaCount }}
+  maxReplicas: {{ .Values.main.autoscaling.maxReplicaCount }}
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        # Formula is (limit/request) * desiredPercentage
+        averageUtilization: {{ div .Values.main.resources.limits.cpu .Values.main.resources.requests.cpu | mul .Values.main.autoscaling.cpuUtilizationPercentage }}
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        # Formula is (limit/request) * desiredPercentage
+        averageUtilization: {{ div .Values.main.resources.limits.memory .Values.main.resources.requests.memory | mul .Values.main.autoscaling.memoryUtilizationPercentage }}
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ .Values.worker.name }}-autoscaler
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ .Values.worker.name }}
+  minReplicas: {{ .Values.worker.autoscaling.minReplicaCount }}
+  maxReplicas: {{ .Values.worker.autoscaling.maxReplicaCount }}
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        # Formula is (limit/request) * desiredPercentage
+        averageUtilization: {{ div .Values.worker.resources.limits.cpu .Values.worker.resources.requests.cpu | mul .Values.worker.autoscaling.cpuUtilizationPercentage }}
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        # Formula is (limit/request) * desiredPercentage
+        averageUtilization: {{ div .Values.worker.resources.limits.memory .Values.worker.resources.requests.memory | mul .Values.worker.autoscaling.memoryUtilizationPercentage }}
