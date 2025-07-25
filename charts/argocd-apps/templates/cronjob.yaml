@@ -1,6 +1,7 @@
 {{- if .Values.cronjob }}
 {{- range $key, $value := .Values.cronjob }}
 {{- if eq $value.enabled true }}
+---
 apiVersion: batch/v1
 kind: CronJob
 metadata:

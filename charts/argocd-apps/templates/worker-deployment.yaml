@@ -57,7 +57,13 @@ spec:
             - name: DD_PROFILING_ENABLED
               value: "true"
           envFrom: {{- toYaml .Values.worker.envFrom | nindent 12 }}
-          resources: {{- toYaml .Values.worker.resources | nindent 12 }}
+          resources:
+            requests:
+              cpu: "{{ .Values.worker.resources.requests.cpu }}m"
+              memory: "{{ .Values.worker.resources.requests.memory }}Mi"
+            limits:
+              cpu: "{{ .Values.worker.resources.limits.cpu }}m"
+              memory: "{{ .Values.worker.resources.limits.memory }}Mi"
           command: {{ .Values.worker.command }}
           args:
           {{- range .Values.worker.args }}

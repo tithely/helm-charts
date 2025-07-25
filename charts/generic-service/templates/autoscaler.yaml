@@ -1,0 +1,63 @@
+{{- range $key, $value := .Values.frontend }}
+{{- if eq $value.autoscaling.enabled true }}
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ $value.name }}-autoscaler
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ $value.name }}
+  minReplicas: {{ $value.replicaCount }}
+  maxReplicas: {{ $value.autoscaling.maxReplicaCount }}
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        # Formula is (limit/request) * desiredPercentage
+        averageUtilization: {{ div $value.resources.limits.cpu $value.resources.requests.cpu | mul $value.autoscaling.cpuUtilizationPercentage }}
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        # Formula is (limit/request) * desiredPercentage
+        averageUtilization: {{ div $value.resources.limits.memory $value.resources.requests.memory | mul $value.autoscaling.memoryUtilizationPercentage }}
+{{- end }}
+{{- end }}
+
+{{- range $key, $value := .Values.worker }}
+{{- if eq $value.autoscaling.enabled true }}
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ $value.name }}-autoscaler
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ $value.name }}
+  minReplicas: {{ $value.replicaCount }}
+  maxReplicas: {{ $value.autoscaling.maxReplicaCount }}
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        # Formula is (limit/request) * desiredPercentage
+        averageUtilization: {{ div $value.resources.limits.cpu $value.resources.requests.cpu | mul $value.autoscaling.cpuUtilizationPercentage }}
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        # Formula is (limit/request) * desiredPercentage
+        averageUtilization: {{ div $value.resources.limits.memory $value.resources.requests.memory | mul $value.autoscaling.memoryUtilizationPercentage }}
+{{- end }}
+{{- end }}
