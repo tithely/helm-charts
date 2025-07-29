@@ -78,6 +78,7 @@ spec:
             - name: http
               containerPort: {{ .Values.main.port }}
               protocol: TCP
+          {{- if .Values.main.resources }}
           resources:
             requests:
               cpu: "{{ .Values.main.resources.requests.cpu }}m"
@@ -85,6 +86,7 @@ spec:
             limits:
               cpu: "{{ .Values.main.resources.limits.cpu }}m"
               memory: "{{ .Values.main.resources.limits.memory }}Mi"
+          {{- end }}
           volumeMounts:
             {{- range $key, $value := $.Values.keyinjection }}
             - name: {{ $value.name }}
