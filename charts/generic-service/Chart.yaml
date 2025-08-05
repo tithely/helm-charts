@@ -1,7 +1,7 @@
 apiVersion: v2
 name: generic-service
 description: A Helm chart for Kubernetes
-version: 1.1.7
+version: 2.0.1
 dependencies:
   - name: memcached
     version: 6.6.x

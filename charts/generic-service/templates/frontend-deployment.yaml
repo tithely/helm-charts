@@ -84,7 +84,12 @@ spec:
               containerPort: {{ $value.port }}
               protocol: TCP
           resources:
-            {{- toYaml $value.resources | nindent 12 }}
+            requests:
+              cpu: "{{ $value.resources.requests.cpu }}m"
+              memory: "{{ $value.resources.requests.memory }}Mi"
+            limits:
+              cpu: "{{ $value.resources.limits.cpu }}m"
+              memory: "{{ $value.resources.limits.memory }}Mi"
           volumeMounts:
             {{- range $key, $value := $.Values.keyinjection }}
             - name: {{ $value.name }}
