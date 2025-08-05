@@ -23,6 +23,9 @@ frontend:
       secretRef: php-app-tls # pragma: allowlist secret
     imagepolicy:
       pattern: ^DEVOPS-338-deploy-breeze-qa-api-[a-fA-F0-9]+-(?P<ts>.*)
+    pdb:
+      # (Optional) Minimum number of frontend pods that must be available during disruptions
+      minAvailable: 1
 
 worker:
   - name: worker
@@ -35,6 +38,9 @@ worker:
     replicaCount: 1
     imagepolicy:
       pattern: ^DEVOPS-338-deploy-breeze-qa-api-[a-fA-F0-9]+-(?P<ts>.*)
+    pdb:
+      # (Optional) Minimum number of worker pods that must be available during disruptions
+      minAvailable: 1
 
 autoscaling:
   enabled: true

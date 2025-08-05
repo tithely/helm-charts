@@ -32,6 +32,9 @@ main:
     maxReplicaCount: 
     cpuUtilizationPercentage: 
     memoryUtilizationPercentage: 
+  pdb:
+    # (Optional) Minimum number of frontend pods that must be available during disruptions
+    minAvailable: 1
 worker:
   name: 
   enabled: 
@@ -51,4 +54,7 @@ worker:
     minReplicaCount: 
     maxReplicaCount: 
     cpuUtilizationPercentage: 
-    memoryUtilizationPercentage: 
+    memoryUtilizationPercentage:
+  pdb:
+    # (Optional) Minimum number of worker pods that must be available during disruptions
+    minAvailable: 1
