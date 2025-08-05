@@ -1,35 +1,60 @@
-project:
-environment:
+project: 
+environment: 
 onepassworditems:
-  - name:
-    itemPath:
-    secretType:
+- name: 
+  itemPath: 
+  secretType: 
+- name: 
+  itemPath: 
 main:
-  name:
-  enabled:
-  type:
-  image:
-  resources: {}
-  port:
-  replicaCount:
+  name: 
+  enabled: 
+  type: 
+  image: 
+  resources:
+    requests:
+      cpu:  # in millicores
+      memory:  # in mebibytes
+    limits:
+      cpu:  # in millicores
+      memory:  # in mebibytes
+  port: 
+  envFrom:
+  - secretRef:
+      name: 
   loadBalancer:
-    name:
-    targetGroupARN:
-    securityGroupID:
+    name: 
+    targetGroupARN: 
+    securityGroupID: 
+  autoscaling:
+    enabled: 
+    minReplicaCount: 
+    maxReplicaCount: 
+    cpuUtilizationPercentage: 
+    memoryUtilizationPercentage: 
   pdb:
     # (Optional) Minimum number of frontend pods that must be available during disruptions
     minAvailable: 1
 worker:
-  name:
-  enabled:
-  type:
-  image:
-  command:
-  args:
-    -
-  pullPolicy:
+  name: 
+  enabled: 
+  type: 
+  image: 
+  command: 
+  pullPolicy: 
   resources:
-  replicaCount:
+    requests:
+      cpu:  # in millicores
+      memory:  # in mebibytes
+    limits:
+      cpu:  # in millicores
+      memory:  # in mebibytes
+  autoscaling:
+    enabled: 
+    minReplicaCount: 
+    maxReplicaCount: 
+    cpuUtilizationPercentage: 
+    memoryUtilizationPercentage:
   pdb:
     # (Optional) Minimum number of worker pods that must be available during disruptions
     minAvailable: 1
