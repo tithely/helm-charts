@@ -32,6 +32,9 @@ main:
     maxReplicaCount: 
     cpuUtilizationPercentage: 
     memoryUtilizationPercentage: 
+  # Revision history limit for the deployment. This is the number of old ReplicaSets to retain
+  # Set to 0 to disable revision history. If not set, defaults to 3
+  revisionHistoryLimit : 3
 worker:
   name: 
   enabled: 
@@ -52,3 +55,6 @@ worker:
     maxReplicaCount: 
     cpuUtilizationPercentage: 
     memoryUtilizationPercentage: 
+  # Revision history limit for the deployment. This is the number of old ReplicaSets to retain
+  # Set to 0 to disable revision history. If not set, defaults to 3
+  revisionHistoryLimit : 3
