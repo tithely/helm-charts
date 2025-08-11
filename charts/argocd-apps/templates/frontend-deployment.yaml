@@ -15,6 +15,7 @@ metadata:
     operator.1password.io/item-path: "vaults/EnvironmentVariables/items/{{ $.Values.project }}-{{ $.Values.environment }}"
     ad.datadoghq.com/{{ .Values.main.name }}.logs: "[{\"source\": \"{{ .Values.main.type }}\"}]"
 spec:
+  revisionHistoryLimit: {{ .Values.main.revisionHistoryLimit | default 3 }}
   replicas: {{ .Values.main.replicaCount }}
   selector:
     matchLabels:
