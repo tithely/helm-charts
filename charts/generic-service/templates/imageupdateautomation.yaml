@@ -15,7 +15,7 @@ spec:
         email: tithelybot@users.noreply.github.com
         name: tithelybot
       messageTemplate: |-
-        {{ `{{range .Changed.Images}}{{println .}}{{end}}` }}
+        "Updated by Flux - {{ .Release.Name }}"
     push:
       branch: main
   interval: 1m0s
