@@ -51,4 +51,14 @@ worker:
     minReplicaCount: 
     maxReplicaCount: 
     cpuUtilizationPercentage: 
-    memoryUtilizationPercentage: 
+    memoryUtilizationPercentage:
+migrations:
+  name:
+  enabled:
+  image:
+  command:
+  pullPolicy:
+  restartPolicy:
+  envFrom:
+    - secretRef:
+        name:

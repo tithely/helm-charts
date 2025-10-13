@@ -1,11 +1,10 @@
 {{- if .Values.migrations }}
-{{- range $key, $value := .Values.migrations }}
-{{- if eq $value.enabled true }}
+{{- if eq .Values.migrations.enabled true }}
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ $value.name }}
+  name: {{ $.Values.migrations.name }}
   generateName: {{ $.Release.Namespace }}-migrations-job-
   namespace: {{ $.Release.Namespace }}
 spec:
@@ -13,16 +12,15 @@ spec:
   backoffLimit: 4
   template:
     spec:
-      restartPolicy: {{ $value.restartPolicy }}
+      restartPolicy: {{ $.Values.migrations.restartPolicy }}
       containers:
-      - name: {{ $value.name }}-job
-        command: {{ $value.command }}
-        image: "{{ $value.image }}"
+      - name: {{ $.Values.migrations.name }}-job
+        command: {{ $.Values.migrations.command }}
+        image: "{{ $.Values.migrations.image }}"
         args:
-          {{- range $value.args }}
+          {{- range $.Values.migrations.args }}
             - {{ . }}
           {{- end }}
-        envFrom: {{- toYaml $value.envFrom | nindent 12 }}
-{{- end -}}
+        envFrom: {{- toYaml $.Values.migrations.envFrom | nindent 12 }}
 {{- end -}}
 {{- end -}}
