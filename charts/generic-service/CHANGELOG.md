@@ -732,7 +732,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
-[Unreleased]: https://github.com/tithely/helm-charts/compare/generic-service-2.0.0-alpha...HEAD
+[Unreleased]: https://github.com/tithely/helm-charts/compare/generic-service-2.0.1-rc.1...HEAD
+[2.0.1-rc.1]: https://github.com/tithely/helm-charts/compare/generic-service-2.0.0-alpha...generic-service-2.0.1-rc.1
 [2.0.0-alpha]: https://github.com/tithely/helm-charts/compare/generic-service-1.1.6-delta...generic-service-2.0.0-alpha
 [1.1.6-delta]: https://github.com/tithely/helm-charts/compare/generic-service-1.1.6-charlie...generic-service-1.1.6-delta
 [1.1.6-charlie]: https://github.com/tithely/helm-charts/compare/generic-service-1.1.6-beta...generic-service-1.1.6-charlie
