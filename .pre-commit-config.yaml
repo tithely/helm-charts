@@ -20,4 +20,3 @@ repos:
     hooks:
       - id: checkov_diff
         verbose: false # Switch to true for more detailed output, including the diff of the files being checked.
-        files: .
