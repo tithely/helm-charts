@@ -12,6 +12,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [2.0.1-rc.1] - 2026-02-20
+
+### Fixed
+
+- Migrations job now runs as a Helm hook (`pre-install,pre-upgrade`) with `before-hook-creation` delete policy, preventing "cannot patch" errors when re-deploying a release that already has a completed migrations job.
+
 ## [2.0.0-alpha] - 2025-07-25
 
 ### Added
