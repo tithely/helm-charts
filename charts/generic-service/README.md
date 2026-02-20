@@ -2,7 +2,7 @@
 
 ![Version: 2.0.0-alpha](https://img.shields.io/badge/Version-2.0.0--alpha-informational?style=flat-square)
 
-A Helm chart for deploying services to Kubernetes. Supports frontend and worker deployments, autoscaling, load balancers, CronJobs, migrations, Datadog tagging, and optional Memcached/Redis subcharts.
+A Helm chart for Kubernetes
 
 ## Requirements
 
@@ -674,7 +674,6 @@ A Helm chart for deploying services to Kubernetes. Supports frontend and worker 
 | worker[0].replicaCount | int | `1` |  |
 | worker[0].resources | object | `{}` |  |
 | worker[0].secretsRef | string | `"qa-environemnt-variables"` |  |
-| worker[0].test | string | `"echo 'example'"` |  |
 | worker[0].type | string | `"php"` |  |
 
 ----------------------------------------------
