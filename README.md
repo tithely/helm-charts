@@ -26,8 +26,8 @@ The following hooks run on every commit:
 | Hook | Purpose |
 |------|---------|
 | `helm-docs` | Regenerates `README.md` for each chart from `Chart.yaml` and `Values.yaml` |
-| `detect-secrets` | Prevents accidental secret commits |
-| `checkov` | Static analysis for Kubernetes misconfigurations |
+| `checkov_secrets` | Scans for hardcoded secrets and credentials |
+| `checkov_diff` | Static analysis for Kubernetes misconfigurations on changed files |
 | `end-of-file-fixer` | Ensures files end with a newline |
 | `trailing-whitespace` | Removes trailing whitespace |
 
