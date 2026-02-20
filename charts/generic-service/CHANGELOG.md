@@ -4,6 +4,8 @@ All notable changes to this chart will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) beginning after 2.0.0.
 
+> **Note on version suffixes:** The 2.0.0 and previous pre-release series used Greek letter suffixes (alpha < beta < charlie < delta) as a stand-in for pre-release versioning during rapid iteration. `2.0.0-alpha` was a pre-release of `2.0.0`.
+
 > **Note on 1.0.x history:** The 1.0.x series was developed through rapid iteration in August–January 2023–2024. Many patch versions within this range were same-day fixes with non-descriptive commit messages. Entries for these versions reflect the best available reconstruction from git history.
 
 > **Note on 1.999.1:** This tag (2023-09-11) was an experimental version created during the 1.0.x development period. It is not part of the normal release sequence and should not be used.
