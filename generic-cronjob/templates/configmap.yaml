@@ -1,0 +1,16 @@
+{{- range $job := .Values.jobs }}
+
+{{- if $job.config -}}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "cronjobs.releaseName" $ }}-{{ $job.name }}-config
+  namespace: {{ $job.namespace }}
+data:
+  {{- range $key, $value := $job.config }}
+  {{ $key }}:
+    {{- toYaml $value | nindent 4 }}
+    {{- end }}
+{{- end }}
+{{- end }}

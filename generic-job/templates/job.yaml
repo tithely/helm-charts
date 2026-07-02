@@ -1,0 +1,83 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "job.fullname" . }}
+  namespace: {{ .Values.namespace }}  
+  labels:
+    {{- include "chart.label" . | nindent 4 }}
+spec:
+  {{- if hasKey .Values "ttlSecondsAfterFinished" }}
+  ttlSecondsAfterFinished: {{ .Values.ttlSecondsAfterFinished }}
+  {{- end }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "job.fullname" $ }}
+        {{- if .Values.runOnFargate }}
+        ep.com/placement: fargate
+        {{- end }}
+    {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}        
+    spec:
+      serviceAccountName: {{ include "job.serviceAccountName" . }}
+    {{- if .Values.securityContext.runAsUser }}
+      securityContext:
+        runAsUser: {{ .Values.securityContext.runAsUser }}
+        {{- if .Values.securityContext.runAsGroup }}
+        runAsGroup: {{ .Values.securityContext.runAsGroup }}
+        {{- end }}
+        {{- if .Values.securityContext.fsGroup }}
+        fsGroup: {{ .Values.securityContext.fsGroup }}
+        {{- end }}
+    {{- end }}
+      containers:
+      - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.imagePullPolicy }}
+        name: {{ include "job.fullname" . }}
+        env:
+        {{- range concat (.Values.global.env) (.Values.env | default list)}}
+        - name: {{ .name | quote}}
+          value: {{ .value | quote }}
+        {{- end }}
+        {{- with .Values.command }}
+        command:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- with .Values.args }}
+        args:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- with .Values.resources }}
+        resources:
+{{ toYaml . | indent 10 }}
+        {{- end }}
+        {{- with .Values.volumeMounts }}
+        volumeMounts:
+{{ toYaml . | indent 8 }}
+        {{- end }}
+      volumes:
+        {{- if .Values.volumes }}
+        {{- toYaml .Values.volumes | nindent 8 }}
+        {{- end }}
+        {{- if .Values.config }}
+        - name: config
+          configMap:
+            name: {{ include "job.fullname" . }}-config
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+      {{- end }}
+      restartPolicy: {{ .Values.restartPolicy }}
+  backoffLimit: {{ .Values.backoffLimit }}
