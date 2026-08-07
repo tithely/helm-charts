@@ -12,6 +12,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+
+- `initContainer` support for **worker** deployments (previously only frontend
+  deployments rendered an `initContainer`). Each `worker[]` entry may now define
+  an optional `initContainer` (`name`, `enabled`, `image`, `command`, `args`);
+  it inherits the worker's `envFrom`. Mirrors the existing frontend behaviour.
+  Enables migration-guard init containers to run on workers (e.g.
+  communications-service `showmigrations --check`).
+
 ## [2.0.0-alpha] - 2025-07-25
 
 ### Added
