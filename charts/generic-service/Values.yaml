@@ -35,6 +35,14 @@ worker:
     replicaCount: 1
     imagepolicy:
       pattern: ^DEVOPS-338-deploy-breeze-qa-api-[a-fA-F0-9]+-(?P<ts>.*)
+    # Optional init container (e.g. a migration guard). When enabled, renders an
+    # initContainers entry on the worker pod; it inherits the worker's envFrom.
+    initContainer:
+      enabled: true
+      name: check-migrations
+      image: "php:8.1.22-apache-bullseye"
+      command: ["python"]
+      args: ["./django_app/manage.py", "showmigrations", "--check"]
 
 autoscaling:
   enabled: true

@@ -1,6 +1,6 @@
 # generic-service
 
-![Version: 2.0.0-alpha](https://img.shields.io/badge/Version-2.0.0--alpha-informational?style=flat-square)
+![Version: 2.1.0-rc.1](https://img.shields.io/badge/Version-2.1.0--rc.1-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
@@ -669,6 +669,13 @@ A Helm chart for Kubernetes
 | worker[0].enabled | bool | `true` |  |
 | worker[0].image | string | `"php:8.1.22-apache-bullseye"` |  |
 | worker[0].imagepolicy.pattern | string | `"^DEVOPS-338-deploy-breeze-qa-api-[a-fA-F0-9]+-(?P<ts>.*)"` |  |
+| worker[0].initContainer.args[0] | string | `"./django_app/manage.py"` |  |
+| worker[0].initContainer.args[1] | string | `"showmigrations"` |  |
+| worker[0].initContainer.args[2] | string | `"--check"` |  |
+| worker[0].initContainer.command[0] | string | `"python"` |  |
+| worker[0].initContainer.enabled | bool | `true` |  |
+| worker[0].initContainer.image | string | `"php:8.1.22-apache-bullseye"` |  |
+| worker[0].initContainer.name | string | `"check-migrations"` |  |
 | worker[0].name | string | `"worker"` |  |
 | worker[0].pullPolicy | string | `"IfNotPresent"` |  |
 | worker[0].replicaCount | int | `1` |  |
