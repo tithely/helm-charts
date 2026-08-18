@@ -12,6 +12,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [2.0.0-beta] - 2026-08-18
+
+### Added
+
+- HTTP probe support for frontend deployments. `readinessProbe` now accepts an optional `httpGet` (`path` + `port`); when it is omitted the probe falls back to the existing `tcpSocket` behaviour, so this is backward compatible for current consumers. A new optional `livenessProbe` block (also `httpGet` or `tcpSocket`) can be set per frontend entry. This lets services expose the ADR-0003 `/health` (liveness) and `/ready` (readiness) endpoints as real HTTP probes.
+
 ## [2.0.0-alpha] - 2025-07-25
 
 ### Added

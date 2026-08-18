@@ -48,12 +48,35 @@ spec:
           {{- if eq $value.readinessProbe.enabled true }}
           readinessProbe:
             failureThreshold: {{ $value.readinessProbe.failureThreshold }}
+            {{- if $value.readinessProbe.httpGet }}
+            httpGet:
+              path: {{ $value.readinessProbe.httpGet.path }}
+              port: {{ $value.readinessProbe.httpGet.port }}
+            {{- else }}
             tcpSocket:
               port: {{ $value.readinessProbe.tcpSocket.port }}
+            {{- end }}
             initialDelaySeconds: {{ $value.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ $value.readinessProbe.periodSeconds }}
             successThreshold: {{ $value.readinessProbe.successThreshold }}
             timeoutSeconds: {{ $value.readinessProbe.timeoutSeconds }}
+          {{- end }}
+          {{- end }}
+          {{- if $value.livenessProbe }}
+          {{- if eq $value.livenessProbe.enabled true }}
+          livenessProbe:
+            failureThreshold: {{ $value.livenessProbe.failureThreshold }}
+            {{- if $value.livenessProbe.httpGet }}
+            httpGet:
+              path: {{ $value.livenessProbe.httpGet.path }}
+              port: {{ $value.livenessProbe.httpGet.port }}
+            {{- else }}
+            tcpSocket:
+              port: {{ $value.livenessProbe.tcpSocket.port }}
+            {{- end }}
+            initialDelaySeconds: {{ $value.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ $value.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ $value.livenessProbe.timeoutSeconds }}
           {{- end }}
           {{- end }}
           env:
