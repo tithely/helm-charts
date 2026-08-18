@@ -13,6 +13,7 @@ metadata:
   annotations:
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]' # Specify the ports to listen on
     alb.ingress.kubernetes.io/ssl-redirect: "443" # Redirect HTTP to HTTPS
+    alb.ingress.kubernetes.io/ssl-policy: "ELBSecurityPolicy-TLS13-1-2-2021-06"
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/security-groups: allow-http-from-all
     alb.ingress.kubernetes.io/manage-backend-security-group-rules: "true"
