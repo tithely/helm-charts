@@ -12,6 +12,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Fixed
+
+- **ImageUpdateAutomation commit-message template no longer breaks on newer Flux
+  controllers.** The hardcoded `messageTemplate` used the old image-automation
+  template API (`{{range .Changed.Images}}...`), which throws on controllers using
+  the `ResultV2` template data ("can't evaluate field Images in type
+  update.ResultV2"). When that happens the automation renders no commit, never
+  pushes, and the environment **silently stops auto-deploying** (the running pods
+  stay healthy, so there is no outage and no obvious signal). Replaced with a
+  static, Helm-rendered message (`{{ .Release.Name }}: automated image update by
+  Flux`) that cannot break across controller versions.
+
 ## [2.0.0-alpha] - 2025-07-25
 
 ### Added

@@ -14,8 +14,14 @@ spec:
       author:
         email: tithelybot@users.noreply.github.com
         name: tithelybot
+      # Static message evaluated by Helm at render time (no Flux runtime template).
+      # The previous `{{ `{{range .Changed.Images}}{{println .}}{{end}}` }}` used the old
+      # image-automation template API and throws on the newer controller
+      # ("can't evaluate field Images in type update.ResultV2"), so the automation
+      # never commits and the env silently stops auto-deploying. A static message
+      # cannot break across controller versions.
       messageTemplate: |-
-        {{ `{{range .Changed.Images}}{{println .}}{{end}}` }}
+        {{ .Release.Name }}: automated image update by Flux
     push:
       branch: main
   interval: 1m0s
