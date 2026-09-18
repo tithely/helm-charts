@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      # - feature-*
+      - release-1.x   # publish 1.1.x maintenance patches from this branch
 
 jobs:
   release:
@@ -34,6 +34,8 @@ jobs:
 
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.7.0
+        with:
+          skip_existing: true   # skip (do not error) if a version already has a release
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 

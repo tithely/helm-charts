@@ -14,8 +14,10 @@ spec:
       author:
         email: tithelybot@users.noreply.github.com
         name: tithelybot
+      # Repaired: the old range-over-Changed-Images commit template throws on newer Flux
+      # controllers (ResultV2). A static Helm-rendered message cannot break across versions.
       messageTemplate: |-
-        {{ `{{range .Changed.Images}}{{println .}}{{end}}` }}
+        {{ .Release.Name }}: automated image update by Flux
     push:
       branch: main
   interval: 1m0s
