@@ -17,6 +17,9 @@ metadata:
     operator.1password.io/auto-restart: "true"
 spec:
   replicas: {{ $value.replicaCount }}
+  {{- with $value.strategy }}
+  strategy: {{- toYaml . | nindent 4 }}
+  {{- end }}
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ $value.name | quote }}
@@ -35,10 +38,16 @@ spec:
         tags.datadoghq.com/service: {{ $.Values.project | quote }}
         tags.datadoghq.com/version: {{ $.Values.version | quote }}
     spec:
+      {{- with $value.terminationGracePeriodSeconds }}
+      terminationGracePeriodSeconds: {{ . }}
+      {{- end }}
       containers:
         - name: {{ $.Chart.Name }}
           image: "{{ $value.image }}"
           imagePullPolicy: {{ $value.pullPolicy }}
+          {{- with $value.lifecycle }}
+          lifecycle: {{- toYaml . | nindent 12 }}
+          {{- end }}
           {{- if $value.readinessProbe }}
           {{- if eq $value.readinessProbe.enabled true }}
           readinessProbe:

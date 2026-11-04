@@ -1,6 +1,6 @@
 # generic-service
 
-![Version: 1.1.1-hookfix.1](https://img.shields.io/badge/Version-1.1.1--hookfix.1-informational?style=flat-square)
+![Version: 1.1.1-hookfix.2](https://img.shields.io/badge/Version-1.1.1--hookfix.2-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
