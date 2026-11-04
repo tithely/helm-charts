@@ -34,6 +34,9 @@ spec:
         tags.datadoghq.com/service: {{ $.Values.project | quote }}
         tags.datadoghq.com/version: {{ $.Values.version | quote }}
     spec:
+      {{- with $value.terminationGracePeriodSeconds }}
+      terminationGracePeriodSeconds: {{ . }}
+      {{- end }}
       containers:
         - name: {{ $.Chart.Name }}
           image: "{{ $value.image }}"
