@@ -1,0 +1,106 @@
+{{- range $job := .Values.jobs }}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  {{- if hasKey $job "singleName" }}
+  name: "{{ $job.name }}"
+  {{- else }}
+  name: "{{ include "cronjobs.releaseName" $ }}-{{ $job.name }}"
+  {{- end }}
+  namespace: {{ $job.namespace }}
+  labels:
+    {{- include "cronjobs.labels" $ | nindent 4 }}
+spec:
+  concurrencyPolicy: {{ $job.concurrencyPolicy }}
+  failedJobsHistoryLimit: {{ $job.failedJobsHistoryLimit }}
+  jobTemplate:
+    spec:
+      {{- if hasKey $job "ttlSecondsAfterFinished" }}
+      ttlSecondsAfterFinished: {{ $job.ttlSecondsAfterFinished }}
+      {{- end }}
+      template:
+        metadata:
+          labels:
+            app: {{ include "cronjobs.releaseName" $ }}
+            cron: {{ $job.name }}
+            {{- if hasKey $job "podLabels" }}
+            {{- toYaml $job.podLabels | nindent 12 }}
+            {{- end }}
+          {{- if hasKey $job "podAnnotations" }}
+          annotations:
+            {{- toYaml $job.podAnnotations | nindent 12 }}
+          {{- end }}
+        spec:
+        {{- if hasKey $job "serviceAccount" }}
+        {{- if hasKey $job.serviceAccount "name" }}
+          serviceAccountName: {{ $job.serviceAccount.name }}
+        {{- else }}
+          serviceAccountName: {{ $job.name }}
+        {{- end }}
+        {{- end }}
+        {{- if hasKey $job "securityContext" }}
+          {{- if $job.securityContext.runAsUser }}
+          securityContext:
+            runAsUser: {{ $job.securityContext.runAsUser }}
+            {{- if $job.securityContext.runAsGroup }}
+            runAsGroup: {{ $job.securityContext.runAsGroup }}
+            {{- end }}
+            {{- if $job.securityContext.fsGroup }}
+            fsGroup: {{ $job.securityContext.fsGroup }}
+            {{- end }}
+          {{- end }}
+        {{- end }}
+          containers:
+          - image: "{{ $job.image.repository }}:{{ $job.image.tag }}"
+            imagePullPolicy: {{ $job.image.imagePullPolicy }}
+            name: {{ $job.name }}
+            {{- with $job.env }}
+            env:
+{{ toYaml . | indent 12 }}
+            {{- end }}
+            {{- with $job.envFrom }}
+            envFrom:
+{{ toYaml . | indent 12 }}
+            {{- end }}
+            {{- if $job.command }}
+            command: 
+              {{- toYaml $job.command | nindent 16 }}
+            {{- end }}
+            {{- with $job.args }}
+            args:
+{{ toYaml . | indent 12 }}
+              {{- end }}
+            {{- with $job.resources }}
+            resources:
+{{ toYaml . | indent 14 }}
+            {{- end }}
+            {{- with $job.volumeMounts }}
+            volumeMounts:
+{{ toYaml . | indent 12 }}
+            {{- end }}
+          {{- with $job.nodeSelector }}
+          nodeSelector:
+{{ toYaml . | indent 12 }}
+          {{- end }}
+          {{- with $job.affinity }}
+          affinity:
+{{ toYaml . | indent 12 }}
+          {{- end }}
+          {{- with $job.tolerations }}
+          tolerations:
+{{ toYaml . | indent 12 }}
+          {{- end }}
+          restartPolicy: {{ $job.restartPolicy }}
+          volumes:
+          {{- if $job.volumes }}
+{{- toYaml $job.volumes | nindent 10 }}
+          {{- end }}
+          {{- if $job.config }}
+          - name: config
+            configMap:
+              name: {{ include "cronjobs.releaseName" $ }}-{{ $job.name }}-config
+          {{- end }}
+  schedule: {{ $job.schedule | quote }}
+  successfulJobsHistoryLimit: {{ $job.successfulJobsHistoryLimit }}
+{{- end }}

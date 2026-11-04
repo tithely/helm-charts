@@ -1,0 +1,57 @@
+# Default values for job.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+global:
+  env: []
+
+## Job image
+image:
+  repository: "busybox"
+  tag: "1.32"
+  pullPolicy: IfNotPresent
+
+# ttlSecondsAfterFinished: 7200
+
+#command: ["/bin/sh","-c"]
+#args: ["echo 'consuming a message'; sleep 5"]
+
+## Define env
+# env:
+
+## Job configurations
+backoffLimit: 4
+restartPolicy: Never
+
+# By default, fullname uses '{{ .Release.Name }}-{{ .Chart.Name }}'. This
+# overrides that and uses the given string instead.
+# fullnameOverride: "some-name"
+
+# This adds a prefix
+# fullnamePrefix: "pre-"
+# This appends a suffix
+# fullnameSuffix: "-suf"
+
+annotations: {}
+
+podAnnotations: {}
+
+#environment:
+#  - name: VAR1
+#    value: value1
+#  - name: VAR2
+#    value: value2
+
+## define resources
+#resources:
+#  limits:
+#    cpu: 2
+#    memory: 2000Mi
+#  requests:
+#    cpu: 500m
+#    memory: 500Mi
+
+securityContext:
+  runAsUser: 
+  runAsGroup:
+  fsGroup:

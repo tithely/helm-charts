@@ -1,0 +1,286 @@
+# Default values for generic-helm3.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: xxxxxxxxxxx.dkr.ecr.us-east-1.amazonaws.com/generic-heml3
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "stable"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+# podLabels:
+#   tithe.ly/placement: fargate   # Run pod in fargate
+#   tithe.ly/logs_json: "true"    # tell filebeat to attempt to parse logs as json
+
+# Define optional initContainers
+# initContainers: 
+#   sql-migrations:
+#     image: busybox:1.28
+#     command: ['sh', '-c', 'echo Running SQL migrations... && sleep 30']
+
+
+# Define optional configmap with one or more keys
+#
+# config:
+#   myconfig.json: |-
+#     {
+#       "db": {
+#         "username": "johnwick",
+#         "password": "daisy",
+#         "database": "myapp",
+#         "host": "myapp-dev-db.adc-np.ep.com",
+#       }
+#     }
+#
+#  other-config.yaml: |-
+#    hello:
+#      - this
+#      - is
+#      - yaml
+#
+#
+# To mount above config as a file in the container
+#
+# volumeMounts:
+#   - mountPath: /app/myconfig.json
+#     name: config
+#     subPath: myconfig.json
+#   - mountPath: /etc/myapp/other-config.yaml
+#     name: config
+#     subPath: other-config.yaml
+#
+
+# Load all keys from a ConfigMap/Secret as environment variables
+# envFrom:
+#   - configMapRef:
+#       name: my-config-map
+#   - secretRef:
+#       name: my-secret
+# Or for optional ConfigMaps/Secrets:
+# envFrom:
+#   - configMapRef:
+#       name: my-config-map
+#       optional: true
+#   - secretRef:
+#       name: my-secret
+#       optional: false
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: 
+  prometheus.io/scrape: 'false'
+  prometheus.io/path: /prometheus
+  prometheus.io/port: '8888'
+  tithe.ly/developed-by: "<placeholder for dev"
+  tithe.ly/managed-by: "<placeholder for PE>"
+  tithe.ly/runbook-url: "<placeholder for support url>"  
+volumes: {}
+  #- name: efs-pvc
+  #  persistentVolumeClaim:
+  #    claimName: efs
+
+volumeMounts: {}
+  #- mountPath: /opt/
+  #  name: efs-pvc
+
+podSecurityContext: {}
+  # fsGroup: 2000
+    
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: NodePort
+  port: 80
+  containerPort: 8080
+  annotations: {}
+    #alb.ingress.kubernetes.io/healthcheck-path: /actuator/health
+    #alb.ingress.kubernetes.io/target-type: ip
+
+ingress:
+  enabled: false
+  annotations: {}
+    # uncomment the lines below to use aws-load-balancer-controller groups
+    # kubernetes.io/ingress.class: alb
+    # alb.ingress.kubernetes.io/group.name: <my-group>
+    # alb.ingress.kubernetes.io/certificate-arn
+  hosts:
+    - host: chart-example.local
+      paths: []
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources:
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # The values below are tipical springboot java application values.
+  # The following are good values for a nodejs container request: {
+  #    cpu: 0.2, memory : 96Mi} limits: {memory: 190Mi cpu: 1}
+  limits:
+    memory: "2861Mi"
+    cpu: "1"
+  requests:
+    cpu: "0.2"
+    memory: 488Mi
+
+# this replaces the hpa definition from helm2 templates
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+# pod disruption budget defintion
+pdb:
+  enabled: false
+  minAvailable: 1
+  maxunAvailable: 1
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# uncomment the lines below and remove {} in order to use
+livenessProbe: {}
+# livenessProbe:
+#   httpGet:
+#     path: /actuator/health #change this
+#     port: http
+#   initialDelaySeconds: 60
+#   periodSeconds: 60
+#   successThreshold: 1
+#   timeoutSeconds: 10
+
+# uncomment the lines below and remove {} in order to use
+readinessProbe: {}
+#   httpGet: 
+#       path: /actuator/health #change this
+#       port: http
+#   initialDelaySeconds: 60
+#   periodSeconds: 5
+#   successThreshold: 1
+#   timeoutSeconds: 5
+
+# uncomment the lines below and remove {} in order to use
+startupProbe: {}
+#   httpGet: 
+#       path: /actuator/health #change this
+#       port: http
+#   periodSeconds: 10
+#   failureThreshold: 30
+
+networkPolicy: {}
+  # enabled: false
+
+  # Allow all connections from any source. To be set to false if extraIngress is used.
+  # allowIngress: true
+
+  # Allow all connections to any destinations. To be set to false if extraEgress is used.
+  # allowEgress: true
+  # Config custom ingress rules to the NetworkPolicy.
+  # extraIngress: []
+  # extraIngress:
+  #   - from:
+  #     - podSelector:
+  #         matchLabels:
+  #           component: apache
+  #     ports:
+  #     - port: 8080
+  #       protocol: TCP
+  # Config custom egress rules to the NetworkPolicy.
+  # extraEgress: []
+  # extraEgress:
+  #   - to:
+  #     - podSelector:
+  #         matchLabels:
+  #           component: apache
+  #     ports:
+  #     - port: 80
+  #       protocol: TCP
+
+topologySpreadConstraints: {}
+  # cross-host:
+  #   maxSkew: 1
+  #   topologyKey: kubernetes.io/hostname
+  #   whenUnsatisfiable: ScheduleAnyway
+  # cross-zone:
+  #   maxSkew: 1
+  #   topologyKey: topology.kubernetes.io/zone
+  #   whenUnsatisfiable: ScheduleAnyway
+
+# Define optional jobs - each job can be enabled/disabled independently
+# jobs:
+#   database-migration:
+#     enabled: true
+#     image:
+#       repository: myregistry/migration-image
+#       tag: "1.0.0"
+#       pullPolicy: IfNotPresent
+#     command: ["python"]
+#     args: ["migrate.py"]
+#     restartPolicy: Never  # Never or OnFailure
+#     backoffLimit: 3
+#     ttlSecondsAfterFinished: 86400  # Cleanup after 24 hours
+#     activeDeadlineSeconds: 600  # Timeout after 10 minutes
+#     completions: 1
+#     parallelism: 1
+#     resources:
+#       limits:
+#         memory: "512Mi"
+#         cpu: "500m"
+#       requests:
+#         memory: "256Mi"
+#         cpu: "250m"
+#     env:
+#       - name: DATABASE_URL
+#         value: "postgresql://localhost:5432/mydb"
+#     envFrom:
+#       - secretRef:
+#           name: db-credentials
+#     volumeMounts:
+#       - mountPath: /scripts
+#         name: migration-scripts
+#     volumes:
+#       - name: migration-scripts
+#         configMap:
+#           name: migration-scripts
+#     podAnnotations: {}
+#     podLabels: {}
+#     nodeSelector: {}
+#     tolerations: []
+#     affinity: {}
+#     initContainers: {}
+#
+#   data-seeding:
+#     enabled: false
+#     image:
+#       repository: myregistry/seed-image
+#       tag: "1.0.0"
+#     command: ["./seed.sh"]
+#     restartPolicy: OnFailure
+#     backoffLimit: 1

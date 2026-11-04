@@ -1,0 +1,118 @@
+{{- range $jobName, $jobConfig := .Values.jobs }}
+{{- if $jobConfig.enabled }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "generic-helm3.fullname" $ }}-{{ $jobName }}
+  namespace: {{ $.Values.namespace }}
+  labels:
+    {{- include "generic-helm3.labels" $ | nindent 4 }}
+    job-name: {{ $jobName }}
+  {{- with $jobConfig.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if $jobConfig.ttlSecondsAfterFinished }}
+  ttlSecondsAfterFinished: {{ $jobConfig.ttlSecondsAfterFinished }}
+  {{- end }}
+  {{- if $jobConfig.backoffLimit }}
+  backoffLimit: {{ $jobConfig.backoffLimit }}
+  {{- end }}
+  {{- if $jobConfig.activeDeadlineSeconds }}
+  activeDeadlineSeconds: {{ $jobConfig.activeDeadlineSeconds }}
+  {{- end }}
+  {{- if $jobConfig.completions }}
+  completions: {{ $jobConfig.completions }}
+  {{- end }}
+  {{- if $jobConfig.parallelism }}
+  parallelism: {{ $jobConfig.parallelism }}
+  {{- end }}
+  template:
+    metadata:
+    {{- with $jobConfig.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "generic-helm3.selectorLabels" $ | nindent 8 }}
+        job-name: {{ include "generic-helm3.fullname" $ }}-{{ $jobName }}
+        {{- with $jobConfig.podLabels }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      restartPolicy: {{ $jobConfig.restartPolicy | default "Never" }}
+      {{- with $.Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "generic-helm3.serviceAccountName" $ }}
+      {{- if or $jobConfig.securityContext $.Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml ($jobConfig.securityContext | default $.Values.podSecurityContext) | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ $jobName }}
+          {{- if or $jobConfig.containerSecurityContext $.Values.securityContext }}
+          securityContext:
+            {{- toYaml ($jobConfig.containerSecurityContext | default $.Values.securityContext) | nindent 12 }}
+          {{- end }}
+          image: "{{ $jobConfig.image.repository | default $.Values.image.repository }}:{{ $jobConfig.image.tag | default $.Values.image.tag | default $.Chart.AppVersion }}"
+          imagePullPolicy: {{ $jobConfig.image.pullPolicy | default $.Values.image.pullPolicy }}
+          {{- with $jobConfig.command }}
+          command:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with $jobConfig.args }}
+          args:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if $jobConfig.env }}
+          env:
+            {{- toYaml $jobConfig.env | nindent 12 }}
+          {{- end }}
+          {{- with $jobConfig.envFrom }}
+          envFrom:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if $jobConfig.resources }}
+          resources:
+            {{- toYaml $jobConfig.resources | nindent 12 }}
+          {{- end }}
+          {{- if $jobConfig.volumeMounts }}
+          volumeMounts:
+            {{- toYaml $jobConfig.volumeMounts | nindent 12 }}
+          {{- end }}
+      {{- if $jobConfig.initContainers }}
+      initContainers:
+      {{- range $key, $value := $jobConfig.initContainers }}
+        - name: {{ $key }}
+      {{- toYaml $value | nindent 10 }}
+      {{- end }}
+      {{- end }}
+      {{- if or $jobConfig.volumes $.Values.config }}
+      volumes:
+        {{- with $jobConfig.volumes }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- if $.Values.config }}
+        - name: config
+          configMap:
+            name: {{ include "generic-helm3.fullname" $ }}-config
+        {{- end }}
+      {{- end }}
+      {{- with $jobConfig.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $jobConfig.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $jobConfig.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}
+{{- end }}

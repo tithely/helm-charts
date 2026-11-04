@@ -1,0 +1,19 @@
+{{- if .Values.pdb.enabled }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "generic-helm3.fullname" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "generic-helm3.labels" . | nindent 4 }}
+spec:
+  {{- if .Values.pdb.minAvailable }}
+  minAvailable: {{ .Values.pdb.minAvailable }}
+  {{- end}}
+  {{- if .Values.pdb.maxUnavailable }}
+  minAvailable: {{ .Values.pdb.maxUnavailable }}
+  {{- end}}
+  selector:
+    matchLabels:
+      {{- include  "generic-helm3.selectorLabels" . | nindent 6 }}
+{{- end }}
