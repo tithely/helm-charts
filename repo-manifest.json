@@ -1,0 +1,28 @@
+{
+  "_note": "Per-repo metadata per RFC 0004, which lives in the platform-atlas repo at docs/rfc/0004-cross-repo-metadata-standards.md. Seed values; the field set is formalized by the forthcoming repo-manifest.json schema ADR, so fields may change. No scanner consumes this file yet.",
+  "manifest_schema_version": "0.0-seed",
+  "repo": "helm-charts",
+  "org": "tithely",
+  "owning_team": "platform_engineering",
+  "lifecycle": "active",
+  "purpose": "Helm chart library for Tithely Kubernetes deployments (generic-service, argocd-app). Publishes packaged charts to the tithely.github.io/helm-charts Helm repo via chart-releaser; consumed by devops-cicd (Flux) and devops-argocd (ArgoCD).",
+  "languages": ["YAML", "Helm (Go templates)", "Shell"],
+  "deploy_substrate": null,
+  "delivery": "Helm chart library. Not a deployed runtime service; on merge to main, chart-releaser packages each chart and publishes it to the GitHub Pages Helm repo, tagged <chart>-<version>. Consumers pin a specific version.",
+  "delivery_tier": null,
+  "capability_tags": [
+    "helm",
+    "helm-charts",
+    "chart-library",
+    "chart-releaser",
+    "gitops"
+  ],
+  "context": {
+    "agents": "AGENTS.md",
+    "claude": "CLAUDE.md",
+    "session_hook": ".claude/settings.json",
+    "chart_docs": "charts/<chart>/ (README.md [helm-docs generated], CHANGELOG.md, CONTRIBUTING.md)",
+    "ai_context_dir": null,
+    "adr_dir": null
+  }
+}
