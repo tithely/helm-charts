@@ -1,0 +1,59 @@
+name: Release charts to ECR
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "generic-helm3/**"
+      - ".github/workflows/release-oci.yaml"
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+concurrency:
+  group: release-oci
+  cancel-in-progress: false
+
+env:
+  AWS_REGION: us-east-1
+  REGISTRY: 700585553097.dkr.ecr.us-east-1.amazonaws.com
+  REGISTRY_PATH: helm-charts
+  CHARTS: generic-helm3
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::700585553097:role/github-helm-charts-publish
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Log in to ECR
+        run: aws ecr get-login-password | helm registry login --username AWS --password-stdin "$REGISTRY"
+
+      - name: Push new chart versions
+        run: |
+          set -euo pipefail
+          for chart in $CHARTS; do
+            version=$(helm show chart "$chart" | awk '/^version:/ {print $2}')
+            if aws ecr describe-images --repository-name "$REGISTRY_PATH/$chart" \
+                 --image-ids imageTag="$version" >/dev/null 2>&1; then
+              echo "$chart $version is already published"
+              continue
+            fi
+            helm lint "$chart"
+            helm package "$chart" -d dist
+            helm push "dist/$chart-$version.tgz" "oci://$REGISTRY/$REGISTRY_PATH"
+            echo "### Published \`oci://$REGISTRY/$REGISTRY_PATH/$chart:$version\`" >> "$GITHUB_STEP_SUMMARY"
+          done
