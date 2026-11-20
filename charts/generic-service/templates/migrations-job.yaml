@@ -8,6 +8,9 @@ metadata:
   name: {{ $value.name }}
   generateName: {{ $.Release.Namespace }}-migrations-job-
   namespace: {{ $.Release.Namespace }}
+  annotations:
+      "helm.sh/hook": pre-install,pre-upgrade
+      "helm.sh/hook-delete-policy": before-hook-creation
 spec:
   ttlSecondsAfterFinished: 60
   backoffLimit: 4
