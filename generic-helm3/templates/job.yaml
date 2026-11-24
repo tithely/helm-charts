@@ -5,7 +5,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: {{ include "generic-helm3.fullname" $ }}-{{ $jobName }}
-  namespace: {{ $.Values.namespace }}
+  namespace: {{ include "generic-helm3.namespace" $ }}
   labels:
     {{- include "generic-helm3.labels" $ | nindent 4 }}
     job-name: {{ $jobName }}
@@ -36,7 +36,8 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       labels:
-        {{- include "generic-helm3.selectorLabels" $ | nindent 8 }}
+        app.kubernetes.io/instance: {{ $.Release.Name }}
+        app.kubernetes.io/component: job
         job-name: {{ include "generic-helm3.fullname" $ }}-{{ $jobName }}
         {{- with $jobConfig.podLabels }}
           {{- toYaml . | nindent 8 }}

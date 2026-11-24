@@ -3,7 +3,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "generic-helm3.fullname" . }}
-  namespace: {{ .Values.namespace }}
+  namespace: {{ include "generic-helm3.namespace" . }}
   labels:
     {{- include "generic-helm3.labels" . | nindent 4 }}
 spec:

@@ -3,15 +3,15 @@ apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   name: {{ include "generic-helm3.fullname" . }}
-  namespace: {{ .Values.namespace }}
+  namespace: {{ include "generic-helm3.namespace" . }}
   labels:
     {{- include "generic-helm3.labels" . | nindent 4 }}
 spec:
   {{- if .Values.pdb.minAvailable }}
   minAvailable: {{ .Values.pdb.minAvailable }}
   {{- end}}
-  {{- if .Values.pdb.maxUnavailable }}
-  minAvailable: {{ .Values.pdb.maxUnavailable }}
+  {{- if and .Values.pdb.maxUnavailable (not .Values.pdb.minAvailable) }}
+  maxUnavailable: {{ .Values.pdb.maxUnavailable }}
   {{- end}}
   selector:
     matchLabels:

@@ -14,6 +14,22 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+namespace: ""
+
+containerName: ""
+
+env: []
+
+datadog:
+  enabled: false
+  env: ""
+  service: ""
+  logSource: ""
+  appsec: true
+  profiling: true
+
+extraObjects: []
+
 # podLabels:
 #   tithe.ly/placement: fargate   # Run pod in fargate
 #   tithe.ly/logs_json: "true"    # tell filebeat to attempt to parse logs as json
@@ -80,19 +96,14 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
-podAnnotations: 
-  prometheus.io/scrape: 'false'
-  prometheus.io/path: /prometheus
-  prometheus.io/port: '8888'
-  tithe.ly/developed-by: "<placeholder for dev"
-  tithe.ly/managed-by: "<placeholder for PE>"
-  tithe.ly/runbook-url: "<placeholder for support url>"  
-volumes: {}
+podAnnotations: {}
+
+volumes: []
   #- name: efs-pvc
   #  persistentVolumeClaim:
   #    claimName: efs
 
-volumeMounts: {}
+volumeMounts: []
   #- mountPath: /opt/
   #  name: efs-pvc
 
@@ -108,6 +119,7 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
+  enabled: true
   type: NodePort
   port: 80
   containerPort: 8080
@@ -130,20 +142,7 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources:
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # The values below are tipical springboot java application values.
-  # The following are good values for a nodejs container request: {
-  #    cpu: 0.2, memory : 96Mi} limits: {memory: 190Mi cpu: 1}
-  limits:
-    memory: "2861Mi"
-    cpu: "1"
-  requests:
-    cpu: "0.2"
-    memory: 488Mi
+resources: {}
 
 # this replaces the hpa definition from helm2 templates
 autoscaling:
@@ -157,7 +156,7 @@ autoscaling:
 pdb:
   enabled: false
   minAvailable: 1
-  maxunAvailable: 1
+  maxUnavailable: null
 
 nodeSelector: {}
 
@@ -222,6 +221,9 @@ networkPolicy: {}
   #     ports:
   #     - port: 80
   #       protocol: TCP
+
+tests:
+  enabled: false
 
 topologySpreadConstraints: {}
   # cross-host:
