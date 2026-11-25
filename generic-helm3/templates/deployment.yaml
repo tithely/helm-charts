@@ -2,9 +2,16 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "generic-helm3.fullname" . }}
-  namespace: {{ .Values.namespace }}  
+  namespace: {{ include "generic-helm3.namespace" . }}
   labels:
     {{- include "generic-helm3.labels" . | nindent 4 }}
+    {{- if .Values.datadog.enabled }}
+    {{- include "generic-helm3.datadogLabels" . | nindent 4 }}
+    {{- end }}
+  {{- if and .Values.datadog.enabled .Values.datadog.logSource }}
+  annotations:
+    ad.datadoghq.com/{{ include "generic-helm3.containerName" . }}.logs: {{ list (dict "source" .Values.datadog.logSource) | toJson | quote }}
+  {{- end }}
 spec:
 {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
@@ -14,14 +21,23 @@ spec:
       {{- include "generic-helm3.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-    {{- with .Values.podAnnotations }}
+      {{- if or .Values.podAnnotations (and .Values.datadog.enabled .Values.datadog.logSource) }}
       annotations:
+        {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
-    {{- end }}
+        {{- end }}
+        {{- if and .Values.datadog.enabled .Values.datadog.logSource }}
+        ad.datadoghq.com/{{ include "generic-helm3.containerName" . }}.logs: {{ list (dict "source" .Values.datadog.logSource) | toJson | quote }}
+        {{- end }}
+      {{- end }}
       labels:
         {{- include "generic-helm3.selectorLabels" . | nindent 8 }}
         {{- with .Values.podLabels }}
-          {{- toYaml . | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- if .Values.datadog.enabled }}
+        admission.datadoghq.com/enabled: "true"
+        {{- include "generic-helm3.datadogLabels" . | nindent 8 }}
         {{- end }}
     spec:
       {{- with .Values.imagePullSecrets }}
@@ -29,12 +45,16 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "generic-helm3.serviceAccountName" . }}
+      {{- with .Values.podSecurityContext }}
       securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
-        - name: {{ include "generic-helm3.fullname" . }}
+        - name: {{ include "generic-helm3.containerName" . }}
+          {{- with .Values.securityContext }}
           securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           {{- with .Values.command }}
@@ -45,58 +65,73 @@ spec:
           args:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+          {{- if or .Values.datadog.enabled .Values.env }}
           env:
-            {{- toYaml .Values.env | nindent 12 }}
+            {{- include "generic-helm3.datadogEnv" . | nindent 12 }}
+            {{- with .Values.env }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          {{- end }}
           {{- with .Values.envFrom }}
           envFrom:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+          {{- if .Values.service.containerPort }}
           ports:
             - name: http
               containerPort: {{ .Values.service.containerPort }}
               protocol: TCP
+          {{- end }}
+          {{- with .Values.livenessProbe }}
           livenessProbe:
-            {{- toYaml .Values.livenessProbe | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
           readinessProbe:
-            {{- toYaml .Values.readinessProbe | nindent 12 }}
-          {{- if .Values.startupProbe }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.startupProbe }}
           startupProbe:
-            {{- toYaml .Values.startupProbe | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
           {{- end }}
           {{- with .Values.lifecycle }}
           lifecycle:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+          {{- with .Values.resources }}
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.volumeMounts }}
           volumeMounts:
-            {{- toYaml .Values.volumeMounts | nindent 12 }}
-      {{- if .Values.extraContainers }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
       {{- range $key, $value := .Values.extraContainers }}
         - name: {{ $key }}
-      {{- toYaml $value | nindent 10 }}
+          {{- toYaml $value | nindent 10 }}
       {{- end }}
-      {{- end }}
-      {{- if .Values.readinessGates }}
+      {{- with .Values.readinessGates }}
       readinessGates:
-        {{- toYaml .Values.readinessGates | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- if .Values.initContainers }}
       initContainers:
       {{- range $key, $value := .Values.initContainers }}
         - name: {{ $key }}
-      {{- toYaml $value | nindent 10 }}
+          {{- toYaml $value | nindent 10 }}
       {{- end }}
       {{- end }}
+      {{- if or .Values.volumes .Values.config }}
       volumes:
-        {{- if .Values.volumes }}
-        {{- toYaml .Values.volumes | nindent 8 }}
+        {{- with .Values.volumes }}
+        {{- toYaml . | nindent 8 }}
         {{- end }}
         {{- if .Values.config }}
         - name: config
           configMap:
             name: {{ include "generic-helm3.fullname" . }}-config
         {{- end }}
+      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -115,7 +150,7 @@ spec:
       {{- range $key, $value := .Values.topologySpreadConstraints }}
         - labelSelector:
             matchLabels:
-      {{- include "generic-helm3.selectorLabels" $root | nindent 14 }}
-      {{- toYaml $value | nindent 10 }}
+              {{- include "generic-helm3.selectorLabels" $root | nindent 14 }}
+          {{- toYaml $value | nindent 10 }}
       {{- end }}
       {{- end }}

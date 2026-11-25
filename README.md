@@ -10,6 +10,7 @@ Charts are published automatically to the GitHub Pages Helm repository on every 
 |-------|---------|-------------|------|
 | [argocd-app](charts/argocd-apps/) | 1.0.1 | Deployments managed by ArgoCD | [README](charts/argocd-apps/README.md) · [CHANGELOG](charts/argocd-apps/CHANGELOG.md) |
 | [generic-service](charts/generic-service/) | 2.0.0-alpha | General-purpose service deployments | [README](charts/generic-service/README.md) · [CHANGELOG](charts/generic-service/CHANGELOG.md) · [CONTRIBUTING](charts/generic-service/CONTRIBUTING.md) |
+| [generic-helm3](generic-helm3/) | 0.4.0 | General-purpose single-workload chart, published to ECR (OCI) | [README](generic-helm3/README.md) · [CHANGELOG](generic-helm3/CHANGELOG.md) |
 
 ## Development
 

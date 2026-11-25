@@ -1,13 +1,15 @@
+{{- if .Values.service.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "generic-helm3.fullname" . }}
-  namespace: {{ .Values.namespace }}
+  namespace: {{ include "generic-helm3.namespace" . }}
+  {{- with .Values.service.annotations }}
   annotations:
-    {{- toYaml .Values.service.annotations | nindent 4 }}  
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   labels:
     {{- include "generic-helm3.labels" . | nindent 4 }}
-
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -17,3 +19,4 @@ spec:
       name: http
   selector:
     {{- include "generic-helm3.selectorLabels" . | nindent 4 }}
+{{- end }}
